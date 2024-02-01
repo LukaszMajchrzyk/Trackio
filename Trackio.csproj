@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <PackageIcon></PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="graphics\icon_cropped.png" />
+    <None Remove="icon_cropped.png" />
+    <None Remove="View\icon_cropped.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="graphics\icon_cropped.png" />
+    <Resource Include="icon_cropped.png" />
+    <Resource Include="View\icon_cropped.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="View\PageProjectTracker.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\PageProjectTests.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>
