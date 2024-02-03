@@ -17,6 +17,8 @@ namespace Trackio.ViewModel
         //class fields
         private ModelFileManager modelFileManager;
         string sDirectoryLogFiles = Directory.GetCurrentDirectory() + "/LOG/";
+        string sMainLogFile = Directory.GetCurrentDirectory() + "/LOG/" + "Trackio.PB";
+        string isDictionaryOfIDsAndProjectNames;
         //class properties
         public int iLastID
         {
@@ -29,16 +31,22 @@ namespace Trackio.ViewModel
             get { return modelFileManager.iID; }
             set { modelFileManager.iID = value; }
         }
-        public List<int> listOfIDs
+        public List<int> iListOfIDs
         {
-            get { return modelFileManager.listOfIDs; }
-            set { modelFileManager.listOfIDs = value; }
+            get { return modelFileManager.iListOfIDs; }
+            set { modelFileManager.iListOfIDs = value; }
         }
 
-        public List<string> listOfFilesWithExtension
+        public List<string> sListOfFilesWithExtension
         {
-            get { return modelFileManager.listOfFilesWithExtension; }
-            set { modelFileManager.listOfFilesWithExtension = value; }
+            get { return modelFileManager.sListOfFilesWithExtension; }
+            set { modelFileManager.sListOfFilesWithExtension = value; }
+        }
+
+        public List<string> sListOfProjectNames
+        {
+            get { return modelFileManager.sListOfProjectNames; }
+            set { modelFileManager.sListOfProjectNames = value; }
         }
 
 
@@ -46,56 +54,68 @@ namespace Trackio.ViewModel
         {
             //creating object of model
             modelFileManager = new ModelFileManager();
-            //main logic from methods
-            createLogFolder();
-            getFileListFromLogFiles();
-            getLastID();
-
         }
 
 
         //methods section
-        void createLogFolder()
+        public void createLogFolder()
         {
             //create LOG folder if does not exist
-            bool bLogFileExists = System.IO.Directory.Exists(sDirectoryLogFiles);
-            if (!bLogFileExists) System.IO.Directory.CreateDirectory(sDirectoryLogFiles);
+            bool bLogFolderExists = System.IO.Directory.Exists(sDirectoryLogFiles);
+            if (!bLogFolderExists) System.IO.Directory.CreateDirectory(sDirectoryLogFiles);
         }
 
-        void getFileListFromLogFiles()
+        public void getFileListFromLogFiles()
         {
             // get Project Files from Directory (seatch for *.log extension); list of IDs is list of files without extension
-            listOfFilesWithExtension = System.IO.Directory.GetFiles(sDirectoryLogFiles, "*.log").ToList();
-            if (listOfFilesWithExtension.Count > 0)
+            sListOfFilesWithExtension = System.IO.Directory.GetFiles(sDirectoryLogFiles, "*.log").ToList();
+            if (sListOfFilesWithExtension.Count > 0)
             {
-                listOfIDs = listOfFilesWithExtension.Select(System.IO.Path.GetFileNameWithoutExtension).Select(int.Parse).ToList();
-                listOfIDs.Sort();
+                iListOfIDs = sListOfFilesWithExtension.Select(System.IO.Path.GetFileNameWithoutExtension).Select(int.Parse).ToList();
+                iListOfIDs.Sort();
             }
         }
 
-        void getLastID()
+        public void getLastID()
         {
             //lastId may not be last item in list (in case of non sequnce list with missing ids somehow)
             //so we will always start checking from 1 and keep checking for gap in sequence or add +1 to last item if no gaps are present
             iLastID = 1;
-            if (listOfIDs != null)
+            if (iListOfIDs != null)
             {
-                for (int i = 0; i < listOfIDs.Count; i++)
+                for (int i = 0; i < iListOfIDs.Count; i++)
                 {
-                    if (listOfIDs[i] != iLastID)
+                    if (iListOfIDs[i] != iLastID)
                     {
-                        listOfIDs.Add(iLastID);
+                        iListOfIDs.Add(iLastID);
                         break;
                     }
                     else iLastID++;
                 }
             }
-            else listOfIDs = new List<int> { iLastID };
+            else iListOfIDs = new List<int> { iLastID};
         }
 
-        void readProjectFile()
+        public void readProjectLogFile()
         {
-
         }
+
+        public void readMainLogFile()
+        {
+            //create main Log file if it does not exist
+
+            bool bMainLogFileExists = System.IO.File.Exists(sMainLogFile);
+            if (!bMainLogFileExists) System.IO.File.Create(sMainLogFile);
+
+            if (File.Exists(sMainLogFile))
+            {
+                // Store each line in array of strings 
+                string[] sLines = File.ReadAllLines(sMainLogFile);
+
+
+            }
+        }
+
+
     }
 }

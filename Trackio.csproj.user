@@ -10,10 +10,13 @@
     <Compile Update="View\PageBlank.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\PageOpenProject.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\PageProject.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="View\PageNewProjectProperties.xaml.cs">
+    <Compile Update="View\PageProjectProperties.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\WindowAbout.xaml.cs">
@@ -27,6 +30,9 @@
     <Page Update="View\PageBlank.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="View\PageOpenProject.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\PageProject.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -36,7 +42,7 @@
     <Page Update="View\PageProjectTests.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\PageNewProjectProperties.xaml">
+    <Page Update="View\PageProjectProperties.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\WindowAbout.xaml">

@@ -10,11 +10,11 @@ none
 false
 TRACE;RELEASE;NET;NET8_0;NETCOREAPP
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\App.xaml
-7-1518623383
+81406076433
 
-11-82563547
+16-522337712
 198-294894759
-MainWindow.xaml;View\PageBlank.xaml;View\PageProject.xaml;View\PageProjectProperties.xaml;View\PageProjectTests.xaml;View\PageProjectTracker.xaml;View\WindowAbout.xaml;
+MainWindow.xaml;View\PageBlank.xaml;View\PageOpenProject.xaml;View\PageProject.xaml;View\PageProjectProperties.xaml;View\PageProjectTests.xaml;View\PageProjectTracker.xaml;View\WindowAbout.xaml;
 
 True
 

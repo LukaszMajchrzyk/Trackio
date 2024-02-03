@@ -37,19 +37,17 @@ namespace Trackio
 
         private void menuCreateNewClick(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new PageProject();
+            //in case of new project we will use ID = 0;
+            int iID = 0;
+            MainFrame.Content = new PageProject(iID);
 
         }
 
         private void menuOpenClick(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
-            Nullable<bool> result = openFileDlg.ShowDialog();
-
-
-
-            ModelFileManager modelFileManager = new ModelFileManager();
-
+            //implement -> getting id of project now it's hardcoded
+            int iID = 1;
+            MainFrame.Content = new PageProject(iID);
 
 
 

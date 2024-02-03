@@ -15,21 +15,20 @@ using System.Windows.Shapes;
 
 namespace Trackio.View
 {
-    /// <summary>
-    /// Interaction logic for PageProject.xaml
-    /// </summary>
     public partial class PageProject : Page
     {
-        public PageProject()
+        private int iID;
+        public PageProject(int iID)
         {
+            this.iID = iID;
             InitializeComponent();
         }
 
         void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (tabProjectProperties.IsSelected) pageTab.Content = new PageNewProjectProperties();
-            if (tabTests.IsSelected) pageTab.Content = new PageProjectTests();
-            if (tabTracker.IsSelected) pageTab.Content = new PageProjectTracker();
+            if (tabProjectProperties.IsSelected) pageTab.Content = new PageProjectProperties(iID);
+            if (tabTests.IsSelected) pageTab.Content = new PageProjectTests(iID);
+            if (tabTracker.IsSelected) pageTab.Content = new PageProjectTracker(iID);
         }
 
 

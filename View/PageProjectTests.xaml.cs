@@ -15,14 +15,13 @@ using System.Windows.Shapes;
 
 namespace Trackio.View
 {
-    /// <summary>
-    /// Interaction logic for PageProjectProperties.xaml
-    /// </summary>
     public partial class PageProjectTests : Page
     {
-        public PageProjectTests()
+        private int iID;
+        public PageProjectTests(int iID)
         {
             InitializeComponent();
+            this.iID = iID;
         }
     }
 }

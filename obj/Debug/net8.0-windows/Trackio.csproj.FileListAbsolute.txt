@@ -29,5 +29,7 @@ D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageProjectTracker.baml
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\WindowAbout.g.cs
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\WindowAbout.baml
-D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageNewProjectProperties.g.cs
-D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageNewProjectProperties.baml
+D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageOpenProject.g.cs
+D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageOpenProject.baml
+D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageProjectProperties.g.cs
+D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageProjectProperties.baml

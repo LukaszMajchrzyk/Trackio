@@ -14,9 +14,9 @@ namespace Trackio.Model
         //class properties
         public int iID { get; set; }
         public int iLastID { get; set; }
-        public List<int> listOfIDs { get; set; }
-        public List<string> listOfFilesWithExtension { get; set; }
-
+        public List<int> iListOfIDs { get; set; }
+        public List<string> sListOfFilesWithExtension { get; set; }
+        public List<string> sListOfProjectNames { get; set; }
 
 
     }
