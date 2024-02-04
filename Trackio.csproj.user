@@ -10,9 +10,6 @@
     <Compile Update="View\PageBlank.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="View\PageOpenProject.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="View\PageProject.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -27,10 +24,10 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\PageBlank.xaml">
+    <Page Update="View\PageOpenProject.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\PageOpenProject.xaml">
+    <Page Update="View\PageBlank.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\PageProject.xaml">

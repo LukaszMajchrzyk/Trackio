@@ -16,7 +16,7 @@ namespace Trackio.Model
         public string sNameOfProject { get; set; }
         public string sCurrentStatus { get; set; }
         public List<string> listOfProjectsStatus { get; set; }
-        public DateTime dateCurretDateAndTime{ get; set; }
+        public DateTime dateCreationDate{ get; set; }
         public DateTime dateLastUppdated{ get; set; }
 
     }

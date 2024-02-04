@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Trackio.Model;
 using Trackio.View;
+using Trackio.ViewModel;
 
 namespace Trackio
 {
@@ -45,12 +46,7 @@ namespace Trackio
 
         private void menuOpenClick(object sender, RoutedEventArgs e)
         {
-            //implement -> getting id of project now it's hardcoded
-            int iID = 1;
-            MainFrame.Content = new PageProject(iID);
-
-
-
+            MainFrame.Content = new PageOpenProject();
         }
         private void menuSaveClick(object sender, RoutedEventArgs e)
         {

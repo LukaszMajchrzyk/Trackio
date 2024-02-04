@@ -18,7 +18,6 @@ namespace Trackio.ViewModel
         private ModelFileManager modelFileManager;
         string sDirectoryLogFiles = Directory.GetCurrentDirectory() + "/LOG/";
         string sMainLogFile = Directory.GetCurrentDirectory() + "/LOG/" + "Trackio.PB";
-        string isDictionaryOfIDsAndProjectNames;
         //class properties
         public int iLastID
         {
@@ -49,6 +48,12 @@ namespace Trackio.ViewModel
             set { modelFileManager.sListOfProjectNames = value; }
         }
 
+        public Dictionary<int, string> dictionaryIDsAndProjectNames
+        {
+            get { return modelFileManager.dictionaryIDsAndProjectNames; }
+            set { modelFileManager.dictionaryIDsAndProjectNames = value; }
+        }
+
 
         public ViewModelFileManager()
         {
@@ -64,6 +69,18 @@ namespace Trackio.ViewModel
             bool bLogFolderExists = System.IO.Directory.Exists(sDirectoryLogFiles);
             if (!bLogFolderExists) System.IO.Directory.CreateDirectory(sDirectoryLogFiles);
         }
+
+        public void getProjectProfpertiesFromFileByID(int iID)
+        {
+
+        }
+
+        public void createProjectLogFile()
+        {
+
+        }
+
+
 
         public void getFileListFromLogFiles()
         {
@@ -93,7 +110,7 @@ namespace Trackio.ViewModel
                     else iLastID++;
                 }
             }
-            else iListOfIDs = new List<int> { iLastID};
+            else iListOfIDs = new List<int> { iLastID };
         }
 
         public void readProjectLogFile()
@@ -103,19 +120,28 @@ namespace Trackio.ViewModel
         public void readMainLogFile()
         {
             //create main Log file if it does not exist
-
             bool bMainLogFileExists = System.IO.File.Exists(sMainLogFile);
             if (!bMainLogFileExists) System.IO.File.Create(sMainLogFile);
+            File.SetAttributes(sMainLogFile, FileAttributes.ReadOnly);
 
+            //main logic
+            dictionaryIDsAndProjectNames = new Dictionary<int, string>();
             if (File.Exists(sMainLogFile))
             {
-                // Store each line in array of strings 
-                string[] sLines = File.ReadAllLines(sMainLogFile);
+                //reading main LOG file
+                string[] arrayOfLines = File.ReadAllLines(sMainLogFile);
 
-
+                for (int i = 0; i < arrayOfLines.Length; i++)
+                {
+                    //search for ID (key)[i] and name (value)[i+1] which is next line in parsed file; 
+                    if (arrayOfLines[i].Contains("Trackio"))
+                    {
+                        int iIDFromLOG = Int32.Parse(arrayOfLines[i].Substring(9, arrayOfLines[i].Length - 10));
+                        string sNameFromLog = arrayOfLines[i + 1];
+                        dictionaryIDsAndProjectNames.Add(iIDFromLOG, sNameFromLog);
+                    }
+                }
             }
         }
-
-
     }
 }

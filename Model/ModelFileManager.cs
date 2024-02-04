@@ -17,6 +17,7 @@ namespace Trackio.Model
         public List<int> iListOfIDs { get; set; }
         public List<string> sListOfFilesWithExtension { get; set; }
         public List<string> sListOfProjectNames { get; set; }
+        public Dictionary<int,string> dictionaryIDsAndProjectNames { get; set; }
 
 
     }

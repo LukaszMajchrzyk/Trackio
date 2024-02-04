@@ -5,10 +5,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Trackio.View"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="PageOpenProject">
+      d:DesignHeight="550" d:DesignWidth="900"
+      Title="PageBlank">
 
-    <Grid>
-        
+    <Grid Background="#FFD0D0D0">
+        <Frame x:Name="frameOpenProject" Content="" NavigationUIVisibility ="Hidden" Height="550" Width="900"/>
+        <ListBox x:Name="listBoxListOfProjects" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="37,55,487,165"/>
+        <Button x:Name="buttonOpen" Content="Open" HorizontalAlignment="Left" Margin="726,427,0,0" VerticalAlignment="Top" Width="74" Click="buttonOpenClick"/>
+
+
     </Grid>
 </Page>

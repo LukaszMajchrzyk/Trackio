@@ -15,14 +15,20 @@ using System.Windows.Shapes;
 
 namespace Trackio.View
 {
-    /// <summary>
-    /// Interaction logic for PageOpenProject.xaml
-    /// </summary>
     public partial class PageOpenProject : Page
     {
         public PageOpenProject()
         {
             InitializeComponent();
+        }
+
+        private void buttonOpenClick(object sender, RoutedEventArgs e)
+        {
+            int iID = 1;
+            frameOpenProject.Content = new PageProject(iID);
+            listBoxListOfProjects.Visibility = Visibility.Hidden;
+            buttonOpen.Visibility = Visibility.Hidden; 
+
         }
     }
 }

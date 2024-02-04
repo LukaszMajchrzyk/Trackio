@@ -36,10 +36,10 @@ namespace Trackio.ViewModel
             set { modelProjectProperties.sCurrentStatus = value; }
         }
 
-        public DateTime dateCurretDateAndTime
+        public DateTime dateCreationDate
         {
-            get { return modelProjectProperties.dateCurretDateAndTime; }
-            set { modelProjectProperties.dateCurretDateAndTime = value; }
+            get { return modelProjectProperties.dateCreationDate; }
+            set { modelProjectProperties.dateCreationDate = value; }
         }
 
         public DateTime dateLastUppdated
@@ -57,7 +57,7 @@ namespace Trackio.ViewModel
 
             //initialize values
             modelProjectProperties.listOfProjectsStatus = ["Created", "In Work", "Done", "Failed", "Obsolete"];
-            modelProjectProperties.dateCurretDateAndTime = DateTime.Now;
+            modelProjectProperties.dateCreationDate = DateTime.Now;
 
             //invoke methods to obtain data
 
