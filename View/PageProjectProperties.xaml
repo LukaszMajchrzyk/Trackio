@@ -9,6 +9,7 @@
       Title="PageProjectProperties">
 
     <Grid Background="#FFD0D0D0">
+        <Frame x:Name ="framePageProjectProperties" Content="" NavigationUIVisibility="Hidden"/>
         <TextBox x:Name ="textBoxID" HorizontalAlignment="Left" Margin="127,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="20" IsReadOnly="True" />
         <Label x:Name="labelID" Content="ID" HorizontalAlignment="Left" Margin="92,46,0,0" VerticalAlignment="Top" FontSize="13"/>
         <Label x:Name="labelName" Content="Name" HorizontalAlignment="Left" Margin="70,95,0,0" VerticalAlignment="Top" FontSize="13"/>

@@ -133,11 +133,13 @@ namespace Trackio.ViewModel
 
                 for (int i = 0; i < arrayOfLines.Length; i++)
                 {
-                    //search for ID (key)[i] and name (value)[i+1] which is next line in parsed file; 
+                    //search for ID (key)[i] and name (value)[i+1] which is next line in parsed file; get only value without ":" by substring
                     if (arrayOfLines[i].Contains("Trackio"))
                     {
                         int iIDFromLOG = Int32.Parse(arrayOfLines[i].Substring(9, arrayOfLines[i].Length - 10));
                         string sNameFromLog = arrayOfLines[i + 1];
+                        sNameFromLog = sNameFromLog.Substring(arrayOfLines[i + 1].LastIndexOf(':') + 1);
+                        sNameFromLog = String.Concat(sNameFromLog.Where(c => !Char.IsWhiteSpace(c)));
                         dictionaryIDsAndProjectNames.Add(iIDFromLOG, sNameFromLog);
                     }
                 }

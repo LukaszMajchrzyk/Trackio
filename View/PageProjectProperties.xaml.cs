@@ -55,7 +55,6 @@ namespace Trackio.View
                 
 
             }
-            //if ID is != 0 it means open project option has been choosen
             else
             {
                 //get Project's details from LOG file by ID
@@ -79,7 +78,7 @@ namespace Trackio.View
 
         private void buttonCancelClick(object sender, RoutedEventArgs e)
         {
-
+            
         }
     }
 }
