@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +23,7 @@ namespace Trackio.View
 {
     public partial class PageOpenProject : Page
     {
+        private int iIdOfSelectedProject;
         private ViewModelFileManager viewModelFileManager;
         public PageOpenProject()
         {
@@ -32,20 +35,27 @@ namespace Trackio.View
             datagridIDsAndProjectsNames.ItemsSource = viewModelFileManager.dictionaryIDsAndProjectNames;
         }
 
-        private void buttonOpenClick(object sender, RoutedEventArgs e)
-        {
-            int iID = 1;
-        }
-        //method to set names in Data Grid; binding from xaml
+
+        //method to set names in Data Grid; binding from xml
         private void dataGridHeaderNames(object sender, EventArgs e)
         {
             datagridIDsAndProjectsNames.Columns[0].Header = "ID";
             datagridIDsAndProjectsNames.Columns[1].Header = "Project Name";
         }
+        private void buttonOpenClick(object sender, RoutedEventArgs e)
+        {
+            frameOpenProject.Content = new PageProjectProperties(iIdOfSelectedProject);
+        }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
             frameOpenProject.Navigate(new System.Uri("/View/PageBlank.xaml",UriKind.RelativeOrAbsolute));
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            KeyValuePair<int, string> kvpParsedLine = (KeyValuePair<int,string>)datagridIDsAndProjectsNames.CurrentItem;
+            iIdOfSelectedProject = kvpParsedLine.Key;
         }
     }
 }

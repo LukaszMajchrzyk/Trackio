@@ -21,6 +21,6 @@
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
         </TabControl>
-        <Frame x:Name="pageTab" Content="" NavigationUIVisibility="Hidden" Margin="1,23,0,27" Background="#FFD0D0D0" Width="900" Height="600"/>
+        <Frame x:Name="pageTab" Content="" NavigationUIVisibility="Hidden" Margin="1,23,-1,0" Background="#FFD0D0D0" Width="900"/>
     </Grid>
 </Page>

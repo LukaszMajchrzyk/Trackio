@@ -7,14 +7,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Shapes;
 using Trackio.Model;
+using Trackio.View;
 
 namespace Trackio.ViewModel
 {
     class ViewModelFileManager
     {
         //class fields
+        private ModelProjectProperties modelProjectProperties;
         private ModelFileManager modelFileManager;
         string sDirectoryLogFiles = Directory.GetCurrentDirectory() + "/LOG/";
         string sMainLogFile = Directory.GetCurrentDirectory() + "/LOG/" + "Trackio.PB";
@@ -30,10 +33,10 @@ namespace Trackio.ViewModel
             get { return modelFileManager.iID; }
             set { modelFileManager.iID = value; }
         }
-        public List<int> iListOfIDs
+        public List<int> iListOfTestsPerformed
         {
-            get { return modelFileManager.iListOfIDs; }
-            set { modelFileManager.iListOfIDs = value; }
+            get { return modelFileManager.iListOfTestsPerformed; }
+            set { modelFileManager.iListOfTestsPerformed = value; }
         }
 
         public List<string> sListOfFilesWithExtension
@@ -57,8 +60,9 @@ namespace Trackio.ViewModel
 
         public ViewModelFileManager()
         {
-            //creating object of model
+            //creating objects
             modelFileManager = new ModelFileManager();
+            modelProjectProperties = new ModelProjectProperties();
         }
 
 
@@ -82,14 +86,14 @@ namespace Trackio.ViewModel
 
 
 
-        public void getFileListFromLogFiles()
+        public void getProjectsTestsPerformedListFromLogFiles()
         {
-            // get Project Files from Directory (seatch for *.log extension); list of IDs is list of files without extension
+            // get Project Files for specified Project's IDs from Directory (seatch for *.log extension); list of IDs is list of files without extension
             sListOfFilesWithExtension = System.IO.Directory.GetFiles(sDirectoryLogFiles, "*.log").ToList();
             if (sListOfFilesWithExtension.Count > 0)
             {
-                iListOfIDs = sListOfFilesWithExtension.Select(System.IO.Path.GetFileNameWithoutExtension).Select(int.Parse).ToList();
-                iListOfIDs.Sort();
+                iListOfTestsPerformed = sListOfFilesWithExtension.Select(System.IO.Path.GetFileNameWithoutExtension).Select(int.Parse).ToList();
+                iListOfTestsPerformed.Sort();
             }
         }
 
@@ -98,19 +102,17 @@ namespace Trackio.ViewModel
             //lastId may not be last item in list (in case of non sequnce list with missing ids somehow)
             //so we will always start checking from 1 and keep checking for gap in sequence or add +1 to last item if no gaps are present
             iLastID = 1;
-            if (iListOfIDs != null)
+            if (dictionaryIDsAndProjectNames != null)
             {
-                for (int i = 0; i < iListOfIDs.Count; i++)
+                for (int i = 0; i < dictionaryIDsAndProjectNames.Count; i++)
                 {
-                    if (iListOfIDs[i] != iLastID)
+                    if (dictionaryIDsAndProjectNames.ElementAt(i).Key != iLastID)
                     {
-                        iListOfIDs.Add(iLastID);
                         break;
                     }
                     else iLastID++;
                 }
             }
-            else iListOfIDs = new List<int> { iLastID };
         }
 
         public void readProjectLogFile()
@@ -119,10 +121,8 @@ namespace Trackio.ViewModel
 
         public void readMainLogFile()
         {
-            //create main Log file if it does not exist
-            bool bMainLogFileExists = System.IO.File.Exists(sMainLogFile);
-            if (!bMainLogFileExists) System.IO.File.Create(sMainLogFile);
-            File.SetAttributes(sMainLogFile, FileAttributes.ReadOnly);
+            mainLogFileExists();
+            //File.SetAttributes(sMainLogFile, FileAttributes.ReadOnly);
 
             //main logic
             dictionaryIDsAndProjectNames = new Dictionary<int, string>();
@@ -144,6 +144,31 @@ namespace Trackio.ViewModel
                     }
                 }
             }
+        }
+
+        public void saveToMainLogFile(ViewModelProjectProperties viewmodelProjectProperties)
+        {
+            mainLogFileExists();
+            File.SetAttributes(sMainLogFile, FileAttributes.Normal);
+            //creating whole section to write to file
+            string[] sArrayOfStringsToWrite = new string[5];
+            sArrayOfStringsToWrite[0] = "[Trackio_" + viewmodelProjectProperties.iID + "]";
+            sArrayOfStringsToWrite[1] = "Name : " + viewmodelProjectProperties.sNameOfProject;
+            sArrayOfStringsToWrite[2] = "Creation Date : " + viewmodelProjectProperties.dateCreationDate;
+            sArrayOfStringsToWrite[3] = "Last Update : " + viewmodelProjectProperties.dateLastUppdated;
+            sArrayOfStringsToWrite[4] = "Current Status : " + viewmodelProjectProperties.sCurrentStatus;
+
+            //write data to file
+            File.WriteAllLines(sMainLogFile, sArrayOfStringsToWrite);
+
+
+        }
+
+        public void mainLogFileExists()
+        {
+            //create main Log file if it does not exist
+            bool bMainLogFileExists = System.IO.File.Exists(sMainLogFile);
+            if (!bMainLogFileExists) System.IO.File.Create(sMainLogFile);
         }
     }
 }

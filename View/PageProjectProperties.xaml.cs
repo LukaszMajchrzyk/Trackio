@@ -34,9 +34,10 @@ namespace Trackio.View
 
             //invoke general methods from FileManager to get/set desired values
             viewModelFileManager.createLogFolder();
-            viewModelFileManager.getFileListFromLogFiles();
-            viewModelFileManager.getLastID();
             viewModelFileManager.readMainLogFile();
+            viewModelFileManager.getProjectsTestsPerformedListFromLogFiles();
+            viewModelFileManager.getLastID();
+            
             //
 
 
@@ -70,15 +71,15 @@ namespace Trackio.View
             //setting properties with save button
             viewModelProjectProperties.iID = Int32.Parse(textBoxID.Text);
             viewModelProjectProperties.sNameOfProject = textBoxName.Text;
-            viewModelProjectProperties.sCurrentStatus = comboBoxCurrentStatus.SelectedIndex.ToString();
+            viewModelProjectProperties.sCurrentStatus = comboBoxCurrentStatus.SelectedItem.ToString();
             viewModelProjectProperties.dateCreationDate = DateTime.Parse(textBoxCreationDate.Text);
             viewModelProjectProperties.dateLastUppdated = DateTime.Parse(textBoxLastUpdated.Text);
-
+            viewModelFileManager.saveToMainLogFile(viewModelProjectProperties);
         }
 
         private void buttonCancelClick(object sender, RoutedEventArgs e)
         {
-            
+            framePageProjectProperties.Navigate(new System.Uri("/View/PageBlank.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }
