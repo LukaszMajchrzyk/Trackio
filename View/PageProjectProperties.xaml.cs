@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Trackio.Model;
@@ -22,6 +23,7 @@ namespace Trackio.View
         private int iID;
         private ViewModelFileManager viewModelFileManager;
         private ViewModelProjectProperties viewModelProjectProperties;
+        private ModelProjectProperties modelProjectProperties;
 
         public PageProjectProperties(int iID)
         {
@@ -37,9 +39,7 @@ namespace Trackio.View
             viewModelFileManager.readMainLogFile();
             viewModelFileManager.getProjectsTestsPerformedListFromLogFiles();
             viewModelFileManager.getLastID();
-            
             //
-
 
             // if ID is 0 it means the new project option has been choosen
             if (iID == 0)
@@ -59,10 +59,16 @@ namespace Trackio.View
             else
             {
                 //get Project's details from LOG file by ID
-                viewModelFileManager.getProjectProfpertiesFromFileByID(iID);
+                modelProjectProperties = viewModelFileManager.getProjectProfpertiesFromFileByID(iID);
+                //fill fields with data from LOG
+                textBoxName.Text = modelProjectProperties.sNameOfProject.TrimStart().TrimEnd();
+                textBoxCreationDate.Text = modelProjectProperties.dateCreationDate.ToString().TrimStart().TrimEnd();
+                textBoxLastUpdated.Text = modelProjectProperties.dateLastUppdated.ToString().TrimStart().TrimEnd();
+                comboBoxCurrentStatus.ItemsSource = viewModelProjectProperties.listOfProjectsStatus;
+                comboBoxCurrentStatus.SelectedIndex = viewModelProjectProperties.listOfProjectsStatus.FindIndex(x => x.StartsWith(modelProjectProperties.sCurrentStatus.ToString().TrimStart().TrimEnd()));
             }
 
-            textBoxID.Text = iID.ToString();
+            textBoxID.Text = iID.ToString().TrimStart().TrimEnd();
 
         }
 
@@ -73,8 +79,10 @@ namespace Trackio.View
             viewModelProjectProperties.sNameOfProject = textBoxName.Text;
             viewModelProjectProperties.sCurrentStatus = comboBoxCurrentStatus.SelectedItem.ToString();
             viewModelProjectProperties.dateCreationDate = DateTime.Parse(textBoxCreationDate.Text);
-            viewModelProjectProperties.dateLastUppdated = DateTime.Parse(textBoxLastUpdated.Text);
+            viewModelProjectProperties.dateLastUppdated = DateTime.Now;
             viewModelFileManager.saveToMainLogFile(viewModelProjectProperties);
+            //save current time as last modified date
+            textBoxLastUpdated.Text = DateTime.Now.ToString();
         }
 
         private void buttonCancelClick(object sender, RoutedEventArgs e)

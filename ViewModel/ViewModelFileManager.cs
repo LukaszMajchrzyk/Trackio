@@ -74,9 +74,25 @@ namespace Trackio.ViewModel
             if (!bLogFolderExists) System.IO.Directory.CreateDirectory(sDirectoryLogFiles);
         }
 
-        public void getProjectProfpertiesFromFileByID(int iID)
+        public ModelProjectProperties getProjectProfpertiesFromFileByID(int iID)
         {
-
+            if (File.Exists(sMainLogFile))
+            {
+                //reading main LOG file
+                string[] arrayOfLines = File.ReadAllLines(sMainLogFile);
+                for (int i = 0; i < arrayOfLines.Length ; i++ ) 
+                {
+                    if (arrayOfLines[i].Contains("Trackio_"+iID))
+                    {
+                        modelProjectProperties.iID = iID;
+                        modelProjectProperties.sNameOfProject = arrayOfLines[i+1].Substring(arrayOfLines[i + 1].LastIndexOf(':') + 1);
+                        modelProjectProperties.dateCreationDate = DateTime.Parse(arrayOfLines[i + 2].Split(new[] { ':' }, 2)[1]);
+                        modelProjectProperties.dateLastUppdated = DateTime.Parse(arrayOfLines[i + 3].Split(new[] { ':' }, 2)[1]);
+                        modelProjectProperties.sCurrentStatus = arrayOfLines[i + 4].Substring(arrayOfLines[i + 4].LastIndexOf(':') + 1);
+                    }
+                }
+            }
+            return modelProjectProperties;
         }
 
         public void createProjectLogFile()
@@ -122,8 +138,6 @@ namespace Trackio.ViewModel
         public void readMainLogFile()
         {
             mainLogFileExists();
-            //File.SetAttributes(sMainLogFile, FileAttributes.ReadOnly);
-
             //main logic
             dictionaryIDsAndProjectNames = new Dictionary<int, string>();
             if (File.Exists(sMainLogFile))
