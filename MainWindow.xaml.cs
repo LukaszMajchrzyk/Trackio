@@ -48,10 +48,7 @@ namespace Trackio
         {
             MainFrame.Content = new PageOpenProject();
         }
-        private void menuSaveClick(object sender, RoutedEventArgs e)
-        {
 
-        }
         private void menuCloseProjectClick(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new System.Uri("/View/PageBlank.xaml", UriKind.RelativeOrAbsolute));

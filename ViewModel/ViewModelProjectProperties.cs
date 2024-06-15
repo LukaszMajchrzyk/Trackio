@@ -59,8 +59,6 @@ namespace Trackio.ViewModel
             modelProjectProperties.listOfProjectsStatus = ["Created", "In Work", "Done", "Failed", "Obsolete"];
             modelProjectProperties.dateCreationDate = DateTime.Now;
 
-            //invoke methods to obtain data
-
         }
 
 

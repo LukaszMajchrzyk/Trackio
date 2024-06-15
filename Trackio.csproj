@@ -12,6 +12,7 @@
   <ItemGroup>
     <None Remove="graphics\icon_cropped.png" />
     <None Remove="icon_cropped.png" />
+    <None Remove="ViewModel\ViewModelFileManager.cs~RFe96ee9.TMP" />
     <None Remove="View\icon_cropped.png" />
   </ItemGroup>
 

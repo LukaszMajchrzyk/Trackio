@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -37,7 +38,6 @@ namespace Trackio.View
             //invoke general methods from FileManager to get/set desired values
             viewModelFileManager.createLogFolder();
             viewModelFileManager.readMainLogFile();
-            viewModelFileManager.getProjectsTestsPerformedListFromLogFiles();
             viewModelFileManager.getLastID();
             //
 
@@ -87,7 +87,9 @@ namespace Trackio.View
 
         private void buttonCancelClick(object sender, RoutedEventArgs e)
         {
-            framePageProjectProperties.Navigate(new System.Uri("/View/PageBlank.xaml", UriKind.RelativeOrAbsolute));
+            //there is a need to go backwards 2 steps so instead we're calling main frame
+            MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
+            mainWindow.MainFrame.Content = new PageBlank();
         }
     }
 }

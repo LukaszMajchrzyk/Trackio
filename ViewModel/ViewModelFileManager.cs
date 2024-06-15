@@ -19,8 +19,10 @@ namespace Trackio.ViewModel
         //class fields
         private ModelProjectProperties modelProjectProperties;
         private ModelFileManager modelFileManager;
-        string sDirectoryLogFiles = Directory.GetCurrentDirectory() + "/LOG/";
-        string sMainLogFile = Directory.GetCurrentDirectory() + "/LOG/" + "Trackio.PB";
+        string sDirectoryLogFiles = System.IO.Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.System)) + "Trackio/LOG/";
+        string sMainLogFile = System.IO.Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.System)) + "Trackio/LOG/" + "Trackio.PB";
+        bool bProjectAlreadyExistsinMainLogFile = false;
+        int iLineNumberOfUpdatedProject = 0;
         //class properties
         public int iLastID
         {
@@ -32,17 +34,6 @@ namespace Trackio.ViewModel
         {
             get { return modelFileManager.iID; }
             set { modelFileManager.iID = value; }
-        }
-        public List<int> iListOfTestsPerformed
-        {
-            get { return modelFileManager.iListOfTestsPerformed; }
-            set { modelFileManager.iListOfTestsPerformed = value; }
-        }
-
-        public List<string> sListOfFilesWithExtension
-        {
-            get { return modelFileManager.sListOfFilesWithExtension; }
-            set { modelFileManager.sListOfFilesWithExtension = value; }
         }
 
         public List<string> sListOfProjectNames
@@ -80,12 +71,14 @@ namespace Trackio.ViewModel
             {
                 //reading main LOG file
                 string[] arrayOfLines = File.ReadAllLines(sMainLogFile);
-                for (int i = 0; i < arrayOfLines.Length ; i++ ) 
+                for (int i = 0; i < arrayOfLines.Length; i++)
                 {
-                    if (arrayOfLines[i].Contains("Trackio_"+iID))
+                    if (arrayOfLines[i].Contains("Trackio_" + iID))
                     {
+                        iLineNumberOfUpdatedProject = i;
+                        bProjectAlreadyExistsinMainLogFile = true;
                         modelProjectProperties.iID = iID;
-                        modelProjectProperties.sNameOfProject = arrayOfLines[i+1].Substring(arrayOfLines[i + 1].LastIndexOf(':') + 1);
+                        modelProjectProperties.sNameOfProject = arrayOfLines[i + 1].Substring(arrayOfLines[i + 1].LastIndexOf(':') + 1);
                         modelProjectProperties.dateCreationDate = DateTime.Parse(arrayOfLines[i + 2].Split(new[] { ':' }, 2)[1]);
                         modelProjectProperties.dateLastUppdated = DateTime.Parse(arrayOfLines[i + 3].Split(new[] { ':' }, 2)[1]);
                         modelProjectProperties.sCurrentStatus = arrayOfLines[i + 4].Substring(arrayOfLines[i + 4].LastIndexOf(':') + 1);
@@ -93,24 +86,6 @@ namespace Trackio.ViewModel
                 }
             }
             return modelProjectProperties;
-        }
-
-        public void createProjectLogFile()
-        {
-
-        }
-
-
-
-        public void getProjectsTestsPerformedListFromLogFiles()
-        {
-            // get Project Files for specified Project's IDs from Directory (seatch for *.log extension); list of IDs is list of files without extension
-            sListOfFilesWithExtension = System.IO.Directory.GetFiles(sDirectoryLogFiles, "*.log").ToList();
-            if (sListOfFilesWithExtension.Count > 0)
-            {
-                iListOfTestsPerformed = sListOfFilesWithExtension.Select(System.IO.Path.GetFileNameWithoutExtension).Select(int.Parse).ToList();
-                iListOfTestsPerformed.Sort();
-            }
         }
 
         public void getLastID()
@@ -129,10 +104,6 @@ namespace Trackio.ViewModel
                     else iLastID++;
                 }
             }
-        }
-
-        public void readProjectLogFile()
-        {
         }
 
         public void readMainLogFile()
@@ -171,18 +142,33 @@ namespace Trackio.ViewModel
             sArrayOfStringsToWrite[2] = "Creation Date : " + viewmodelProjectProperties.dateCreationDate;
             sArrayOfStringsToWrite[3] = "Last Update : " + viewmodelProjectProperties.dateLastUppdated;
             sArrayOfStringsToWrite[4] = "Current Status : " + viewmodelProjectProperties.sCurrentStatus;
-
             //write data to file
-            File.WriteAllLines(sMainLogFile, sArrayOfStringsToWrite);
-
-
+            //check if ID of project already exists; if it does call the update method; else write section from scratch
+            if (bProjectAlreadyExistsinMainLogFile)
+            {
+                string[] arrayOfUpdatedLines = File.ReadAllLines(sMainLogFile);
+                arrayOfUpdatedLines[iLineNumberOfUpdatedProject] = sArrayOfStringsToWrite[0];
+                arrayOfUpdatedLines[iLineNumberOfUpdatedProject + 1] = sArrayOfStringsToWrite[1];
+                arrayOfUpdatedLines[iLineNumberOfUpdatedProject + 2] = sArrayOfStringsToWrite[2];
+                arrayOfUpdatedLines[iLineNumberOfUpdatedProject + 3] = sArrayOfStringsToWrite[3];
+                arrayOfUpdatedLines[iLineNumberOfUpdatedProject + 4] = sArrayOfStringsToWrite[4];
+                File.WriteAllLines(sMainLogFile, arrayOfUpdatedLines);
+            }
+            else File.AppendAllLines(sMainLogFile, sArrayOfStringsToWrite);
         }
+
 
         public void mainLogFileExists()
         {
             //create main Log file if it does not exist
             bool bMainLogFileExists = System.IO.File.Exists(sMainLogFile);
-            if (!bMainLogFileExists) System.IO.File.Create(sMainLogFile);
+            if (!bMainLogFileExists)
+            {
+                createLogFolder();
+                var vLogFile = System.IO.File.Create(sMainLogFile);
+                vLogFile.Close();
+            }
         }
+
     }
 }

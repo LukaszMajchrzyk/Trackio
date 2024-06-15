@@ -44,7 +44,8 @@ namespace Trackio.View
         }
         private void buttonOpenClick(object sender, RoutedEventArgs e)
         {
-            frameOpenProject.Content = new PageProjectProperties(iIdOfSelectedProject);
+            //frameOpenProject.Content = new PageProjectProperties(iIdOfSelectedProject);
+            frameOpenProject.Content = new PageProject(iIdOfSelectedProject);
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)

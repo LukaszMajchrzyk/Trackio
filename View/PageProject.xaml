@@ -9,10 +9,9 @@
       Title="PageProject">
     <Grid Background="#FFD0D0D0">
 
-
         <TabControl x:Name="tabControl" SelectionChanged="TabControl_SelectionChanged">
             <TabItem x:Name="tabProjectProperties" Header="Project's Properties" Width="200" >
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5" Margin="0,-2,0,0"/>
             </TabItem>
             <TabItem x:Name="tabTests" Header="Tests" Width="200">
                 <Grid Background="#FFE5E5E5"/>
@@ -21,6 +20,6 @@
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
         </TabControl>
-        <Frame x:Name="pageTab" Content="" NavigationUIVisibility="Hidden" Margin="1,23,-1,0" Background="#FFD0D0D0" Width="900"/>
+        <Frame x:Name="pageTab" NavigationUIVisibility ="Hidden" Margin="0,23,0,0" />
     </Grid>
 </Page>

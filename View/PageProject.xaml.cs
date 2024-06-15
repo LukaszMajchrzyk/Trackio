@@ -31,6 +31,5 @@ namespace Trackio.View
             if (tabTracker.IsSelected) pageTab.Content = new PageProjectTracker(iID);
         }
 
-
     }
 }
