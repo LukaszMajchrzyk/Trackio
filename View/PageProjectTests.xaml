@@ -7,6 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PageProjectProperties">
+    
     <Grid Background="#FFD0D0D0">
         <DataGrid Name="dgProjectTests" AutoGenerateColumns="False" Margin="0,0,0,99" CanUserAddRows="False" SelectionChanged="dataGrid_SelectionChanged"  >
             <DataGrid.Columns>
@@ -14,14 +15,10 @@
                 <DataGridTextColumn x:Name="dgtcID" Header="ID" Binding="{Binding iID}" IsReadOnly="True" />
                 <DataGridTextColumn x:Name="dgtcTestName"  Header="Test's Name" Binding="{Binding sNameOfTest}" Width="400"/>
                 <DataGridTextColumn x:Name="dgtcRunsCount"   Header="Runs' Count" Binding="{Binding iRunsCounter}" IsReadOnly="True"/>
-                <DataGridComboBoxColumn x:Name="dgcbcCurrentStatus" Header="Current Status" SelectedValueBinding="{Binding sCurrentStatus}" ItemsSource="{Binding SelectedValueBinding, ElementName=dataGridComboBoxColumn}" SelectedValuePath="sCurrentStatus">
-                    <DataGridComboBoxColumn.EditingElementStyle>
-                        <Style TargetType="{x:Type ComboBox}">
-                            <EventSetter Event="SelectionChanged" Handler="selectionChanged" />
-                        </Style>
-                    </DataGridComboBoxColumn.EditingElementStyle>
-                </DataGridComboBoxColumn>
-
+                <DataGridComboBoxColumn x:Name="sCurrentStatus" Header="Current Status" 
+                    SelectedValueBinding="{Binding sCurrentStatus, Mode=TwoWay}"                   
+                    DisplayMemberPath="{Binding sCurrentStatus}" 
+                                        />
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="Add New Test" HorizontalAlignment="Left" Margin="10,356,0,0" VerticalAlignment="Top" Click="AddNewTest"/>
@@ -29,3 +26,4 @@
         <Button x:Name="da" Content="Save" HorizontalAlignment="Left" Margin="585,356,0,0" VerticalAlignment="Top" Click="Save" Width="76"/>
     </Grid>
 </Page>
+    

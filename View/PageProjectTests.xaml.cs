@@ -28,7 +28,6 @@ namespace Trackio.View
         private int iNextFreeNumberOfTest;
         private int iMainProjectID;
         private int iTestID;
-        private string sSelectedStatus;
         ObservableCollection<ViewModelProjectTestsDescribed> observableCollectionListOfProjectTests;
         public PageProjectTests(int iMainProjectID)
         {
@@ -40,9 +39,8 @@ namespace Trackio.View
             //Log file for project tests described management
             viewModelProjectTestsDescribed = new ViewModelProjectTestsDescribed(iMainProjectID);
             //tests status initializer
-            dgcbcCurrentStatus.ItemsSource = viewModelProjectTestsDescribed.listOfStatuses;
-            
-
+            sCurrentStatus.ItemsSource = viewModelProjectTestsDescribed.listOfStatuses;
+         
 
 
             viewModelProjectTestsDescribed.createTestsDescribedLogFile();
@@ -89,7 +87,6 @@ namespace Trackio.View
                 viewModelProjectTestsDescribed.sNameOfTest = observableCollectionListOfProjectTests[i].sNameOfTest;
                 viewModelProjectTestsDescribed.iRunsCounter = observableCollectionListOfProjectTests[i].iRunsCounter;
                 viewModelProjectTestsDescribed.sCurrentStatus = observableCollectionListOfProjectTests[i].sCurrentStatus;
-
                 viewModelProjectTestsDescribed.saveTestDescribedLogFile(iMainProjectID);
             }
 
@@ -98,12 +95,6 @@ namespace Trackio.View
         private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             iTestID = dgProjectTests.SelectedIndex;
-        }
-
-        private void selectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var cbStatus = sender as ComboBox;
-            sSelectedStatus = cbStatus.SelectedItem.ToString();
         }
 
 
