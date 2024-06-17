@@ -8,6 +8,7 @@ using System.Data;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,13 +35,13 @@ namespace Trackio.View
             InitializeComponent();
             //storing main ID of Project
             this.iMainProjectID = iMainProjectID;
-            
-            
+
+
             //Log file for project tests described management
             viewModelProjectTestsDescribed = new ViewModelProjectTestsDescribed(iMainProjectID);
             //tests status initializer
             sCurrentStatus.ItemsSource = viewModelProjectTestsDescribed.listOfStatuses;
-         
+
 
 
             viewModelProjectTestsDescribed.createTestsDescribedLogFile();
@@ -59,12 +60,12 @@ namespace Trackio.View
             iNextFreeNumberOfTest = 1;
             if (observableCollectionListOfProjectTests.Count > 0)
             {
-                int[] arrayOfIds  = observableCollectionListOfProjectTests.Select(Test => Test.iID).ToArray();
+                int[] arrayOfIds = observableCollectionListOfProjectTests.Select(Test => Test.iID).ToArray();
 
                 iNextFreeNumberOfTest = Enumerable.Range(1, int.MaxValue).Except(arrayOfIds).FirstOrDefault();
             }
             observableCollectionListOfProjectTests.Add(new ViewModelProjectTestsDescribed(iMainProjectID) { iID = iNextFreeNumberOfTest, iRunsCounter = 0 });
-            
+
         }
 
         private void RemoveTest(object sender, RoutedEventArgs e)
@@ -83,11 +84,18 @@ namespace Trackio.View
             //setting fields to object properties
             for (int i = 0; i < observableCollectionListOfProjectTests.Count; i++)
             {
+                //check if name of test does not have special characters -> it can be an issue during LOG file parsing
+                var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
+                if (!regexItem.IsMatch(observableCollectionListOfProjectTests[i].sNameOfTest))
+                {
+                    MessageBox.Show("Name of Test can not contain special characters");
+                    break;
+                }
                 viewModelProjectTestsDescribed.iID = observableCollectionListOfProjectTests[i].iID;
                 viewModelProjectTestsDescribed.sNameOfTest = observableCollectionListOfProjectTests[i].sNameOfTest;
                 viewModelProjectTestsDescribed.iRunsCounter = observableCollectionListOfProjectTests[i].iRunsCounter;
                 viewModelProjectTestsDescribed.sCurrentStatus = observableCollectionListOfProjectTests[i].sCurrentStatus;
-                viewModelProjectTestsDescribed.saveTestDescribedLogFile(iMainProjectID);
+                viewModelProjectTestsDescribed.saveTestDescribedLogFile();
             }
 
         }
@@ -96,6 +104,8 @@ namespace Trackio.View
         {
             iTestID = dgProjectTests.SelectedIndex;
         }
+
+
 
 
     }

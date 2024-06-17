@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,7 +60,7 @@ namespace Trackio.View
             else
             {
                 //get Project's details from LOG file by ID
-                modelProjectProperties = viewModelFileManager.getProjectProfpertiesFromFileByID(iID);
+                modelProjectProperties = viewModelFileManager.getProjectPropertiesFromFileByID(iID);
                 //fill fields with data from LOG
                 textBoxName.Text = modelProjectProperties.sNameOfProject.TrimStart().TrimEnd();
                 textBoxCreationDate.Text = modelProjectProperties.dateCreationDate.ToString().TrimStart().TrimEnd();
@@ -74,6 +75,14 @@ namespace Trackio.View
 
         private void buttonSaveClick(object sender, RoutedEventArgs e)
         {
+            //check if name of project does not have special characters -> it can be an issue during LOG file parsing
+            var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
+            if (!regexItem.IsMatch(textBoxName.Text))
+            {
+                MessageBox.Show("Name of Project can not contain special characters");
+                return;
+            }
+
             //setting properties with save button
             viewModelProjectProperties.iID = Int32.Parse(textBoxID.Text);
             viewModelProjectProperties.sNameOfProject = textBoxName.Text;

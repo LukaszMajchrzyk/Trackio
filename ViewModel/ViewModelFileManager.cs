@@ -65,7 +65,7 @@ namespace Trackio.ViewModel
             if (!bLogFolderExists) System.IO.Directory.CreateDirectory(sDirectoryLogFiles);
         }
 
-        public ModelProjectProperties getProjectProfpertiesFromFileByID(int iID)
+        public ModelProjectProperties getProjectPropertiesFromFileByID(int iID)
         {
             if (File.Exists(sMainLogFile))
             {
