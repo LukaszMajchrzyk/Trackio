@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.Metrics;
 using System.IO;
 using System.Linq;
@@ -16,9 +17,8 @@ namespace Trackio.ViewModel
         string sProjectDescribedLogFile;
         bool bProjectDescribedLogFileExists;
         Dictionary<int, int> dictionaryOfExistingTestIDs;
+        ObservableCollection<ViewModelProjectTestsDescribed> observableCollectionOfViewModelProjectTestDescribed;
         int iIDofMainProject;
-
-
         private ModelProjectTestsDescribed modelProjectTestsDescribed;
         public bool bTestSelected
         {
@@ -58,8 +58,18 @@ namespace Trackio.ViewModel
             this.iIDofMainProject = iIDofMainProject;
             modelProjectTestsDescribed = new ModelProjectTestsDescribed();
             modelProjectTestsDescribed.listOfStatuses = ["Created", "In Work", "Done", "Failed", "Obsolete"];
-
         }
+
+
+        public ViewModelProjectTestsDescribed(int iID, string sNameOfTest, int iRunsCounter, string sCurrentStatus)
+        {
+            modelProjectTestsDescribed = new ModelProjectTestsDescribed();
+            modelProjectTestsDescribed.iID = iID;
+            modelProjectTestsDescribed.sNameOfTest = sNameOfTest;
+            modelProjectTestsDescribed.iRunsCounter = iRunsCounter;
+            modelProjectTestsDescribed.sCurrentStatus = sCurrentStatus;
+        }
+
         public ViewModelProjectTestsDescribed()
         {
         }
@@ -75,52 +85,64 @@ namespace Trackio.ViewModel
             }
         }
 
-        public void readTestDescribedLogFile()
+        public ObservableCollection<ViewModelProjectTestsDescribed> readTestDescribedLogFile()
         {
-            dictionaryOfExistingTestIDs = new Dictionary<int, int>();
-            int iLineCounter = 0;
-            //reading LOG file for tests described exists
-            string[] arrayOfLinesTestDecribed = File.ReadAllLines(sProjectDescribedLogFile);
-            foreach (string s in arrayOfLinesTestDecribed)
+            projectDescribedLogFileExists();
+            if (bProjectDescribedLogFileExists)
             {
-                iLineCounter += 1;
-                //dictionary will keep test ID and number of line where section for this test begins
-
-                if (s.Contains("[Test_"))
+                dictionaryOfExistingTestIDs = new Dictionary<int, int>();
+                int iLineCounter = 0;
+                //reading LOG file for tests described exists
+                string[] arrayOfLinesTestDecribed = File.ReadAllLines(sProjectDescribedLogFile);
+                observableCollectionOfViewModelProjectTestDescribed = new ObservableCollection<ViewModelProjectTestsDescribed>();
+                for (int i = 0; i < arrayOfLinesTestDecribed.Length; i++)
                 {
-                    var a = s.Substring(6, 1);
-                    dictionaryOfExistingTestIDs.Add(Int32.Parse(s.Substring(6, s.Length -7 )), iLineCounter);
+                    if (arrayOfLinesTestDecribed[i].Contains("[Test_"))
+                    {
+                        iID = Int32.Parse(arrayOfLinesTestDecribed[i].Substring(6, arrayOfLinesTestDecribed[i].Length - 7));
+                        sNameOfTest = arrayOfLinesTestDecribed[i + 1].Substring(arrayOfLinesTestDecribed[i + 1].LastIndexOf(':') + 1);
+                        iRunsCounter = Int32.Parse(arrayOfLinesTestDecribed[i + 2].Substring(arrayOfLinesTestDecribed[i + 2].LastIndexOf(':') + 1));
+                        sCurrentStatus = arrayOfLinesTestDecribed[i + 3].Substring(arrayOfLinesTestDecribed[i + 3].LastIndexOf(':') + 1);
+                        //dictionary will keep test ID and number of line where section for this test begins
+                        dictionaryOfExistingTestIDs.Add(iID, iLineCounter);
+                        observableCollectionOfViewModelProjectTestDescribed.Add(new ViewModelProjectTestsDescribed(iID, sNameOfTest, iRunsCounter, sCurrentStatus) );
+                    }
+                    iLineCounter += 1;
                 }
+                return observableCollectionOfViewModelProjectTestDescribed;
             }
-
-
-
-
-
+            return new ObservableCollection<ViewModelProjectTestsDescribed>();
         }
 
         public void saveTestDescribedLogFile()
         {
             projectDescribedLogFileExists();
             File.SetAttributes(sProjectDescribedLogFile, FileAttributes.Normal);
-            //creating whole section to write to file
+            int iLineNumberToBeUpdated = 0;
             string[] sArrayOfStringsToWrite = new string[4];
-            sArrayOfStringsToWrite[0] = $"[Test_{iID}]";
-            sArrayOfStringsToWrite[1] = $"Name : {sNameOfTest}";
-            sArrayOfStringsToWrite[2] = $"Runs' Count : {iRunsCounter}";
-            sArrayOfStringsToWrite[3] = $"Current Status : {sCurrentStatus}";
-
-
-
-            //checking if test already exists in LOF file; if it does update section will be called 
-            //update
-            //File.WriteAllLines(sProjectDescribedLogFile, sArrayOfStringsToWrite);
-
-            //create
-            File.AppendAllLines(sProjectDescribedLogFile, sArrayOfStringsToWrite);
-
+            //checking if test already exists in LOG file; if it does update section will be called 
+            if (dictionaryOfExistingTestIDs.ContainsKey(iID))
+            {
+                //read LOG file again for update purpose
+                string[] arrayOfLinesTestDecribed = File.ReadAllLines(sProjectDescribedLogFile);
+                //get value from Dictionary by Key; it's our line's number which we want to update
+                iLineNumberToBeUpdated = dictionaryOfExistingTestIDs[iID];
+                arrayOfLinesTestDecribed[iLineNumberToBeUpdated] = $"[Test_{iID}]";
+                arrayOfLinesTestDecribed[iLineNumberToBeUpdated + 1] = $"Name : {sNameOfTest}";
+                arrayOfLinesTestDecribed[iLineNumberToBeUpdated + 2] = $"Runs' Count : {iRunsCounter}";
+                arrayOfLinesTestDecribed[iLineNumberToBeUpdated + 3] = $"Current Status : {sCurrentStatus}";
+                File.WriteAllLines(sProjectDescribedLogFile, arrayOfLinesTestDecribed);
+            }
+            else
+            {
+                //creating whole section to write to file
+                sArrayOfStringsToWrite[0] = $"[Test_{iID}]";
+                sArrayOfStringsToWrite[1] = $"Name : {sNameOfTest}";
+                sArrayOfStringsToWrite[2] = $"Runs' Count : {iRunsCounter}";
+                sArrayOfStringsToWrite[3] = $"Current Status : {sCurrentStatus}";
+                File.AppendAllLines(sProjectDescribedLogFile, sArrayOfStringsToWrite);
+            }  
         }
-
 
         public void projectDescribedLogFileExists()
         {

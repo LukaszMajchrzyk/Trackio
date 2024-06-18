@@ -35,22 +35,21 @@ namespace Trackio.View
             InitializeComponent();
             //storing main ID of Project
             this.iMainProjectID = iMainProjectID;
-
-
-            //Log file for project tests described management
-            viewModelProjectTestsDescribed = new ViewModelProjectTestsDescribed(iMainProjectID);
             //tests status initializer
+            viewModelProjectTestsDescribed = new ViewModelProjectTestsDescribed(iMainProjectID);
             sCurrentStatus.ItemsSource = viewModelProjectTestsDescribed.listOfStatuses;
 
 
-
             viewModelProjectTestsDescribed.createTestsDescribedLogFile();
-            viewModelProjectTestsDescribed.readTestDescribedLogFile();
+            
+
 
             //initilizer for ObservableCollection
             observableCollectionListOfProjectTests = new ObservableCollection<ViewModelProjectTestsDescribed>();
+            observableCollectionListOfProjectTests = viewModelProjectTestsDescribed.readTestDescribedLogFile();
             dgProjectTests.ItemsSource = observableCollectionListOfProjectTests;
             dgProjectTests.AllowDrop = false;
+
 
         }
 
@@ -86,9 +85,15 @@ namespace Trackio.View
             {
                 //check if name of test does not have special characters -> it can be an issue during LOG file parsing
                 var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
-                if (!regexItem.IsMatch(observableCollectionListOfProjectTests[i].sNameOfTest))
+                if (observableCollectionListOfProjectTests[i].sNameOfTest == null || !regexItem.IsMatch(observableCollectionListOfProjectTests[i].sNameOfTest) )
                 {
-                    MessageBox.Show("Name of Test can not contain special characters");
+                    MessageBox.Show("Please provid valid name of Test. No empty value or special characters");
+                    break;
+                }
+                //check if selected status is not empty
+                if (observableCollectionListOfProjectTests[i].sCurrentStatus == null)
+                {
+                    MessageBox.Show("Please select status of added test");
                     break;
                 }
                 viewModelProjectTestsDescribed.iID = observableCollectionListOfProjectTests[i].iID;
