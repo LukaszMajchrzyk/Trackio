@@ -10,7 +10,7 @@ namespace Trackio.ViewModel
     class ViewModelProjectProperties
     {
         private ModelProjectProperties modelProjectProperties;
-        private ViewModelFileManager viewModelFileManager;
+        private ViewModelProjectMain viewModelFileManager;
 
         public int iID 
         {
@@ -53,7 +53,7 @@ namespace Trackio.ViewModel
             //object of model
             modelProjectProperties = new ModelProjectProperties();
             //object for file management
-            viewModelFileManager = new ViewModelFileManager();
+            viewModelFileManager = new ViewModelProjectMain();
 
             //initialize values
             modelProjectProperties.listOfProjectsStatus = ["Created", "In Work", "Done", "Failed", "Obsolete"];

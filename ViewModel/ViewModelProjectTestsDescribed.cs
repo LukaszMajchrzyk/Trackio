@@ -53,12 +53,22 @@ namespace Trackio.ViewModel
             set { modelProjectTestsDescribed.sCurrentStatus = value; }
         }
 
+        public string sComment
+        {
+            get { return modelProjectTestsDescribed.sComment; }
+            set { modelProjectTestsDescribed.sComment = value; }
+
+        }
+
+
         public ViewModelProjectTestsDescribed(int iIDofMainProject)
         {
             this.iIDofMainProject = iIDofMainProject;
             modelProjectTestsDescribed = new ModelProjectTestsDescribed();
             modelProjectTestsDescribed.listOfStatuses = ["Created", "In Work", "Done", "Failed", "Obsolete"];
         }
+
+
 
 
         public ViewModelProjectTestsDescribed(int iID, string sNameOfTest, int iRunsCounter, string sCurrentStatus)
@@ -103,6 +113,7 @@ namespace Trackio.ViewModel
                         sNameOfTest = arrayOfLinesTestDecribed[i + 1].Substring(arrayOfLinesTestDecribed[i + 1].LastIndexOf(':') + 1);
                         iRunsCounter = Int32.Parse(arrayOfLinesTestDecribed[i + 2].Substring(arrayOfLinesTestDecribed[i + 2].LastIndexOf(':') + 1));
                         sCurrentStatus = arrayOfLinesTestDecribed[i + 3].Substring(arrayOfLinesTestDecribed[i + 3].LastIndexOf(':') + 1);
+                        sComment = arrayOfLinesTestDecribed[i + 4].Substring(arrayOfLinesTestDecribed[i + 4].LastIndexOf(':') + 1);
                         //dictionary will keep test ID and number of line where section for this test begins
                         dictionaryOfExistingTestIDs.Add(iID, iLineCounter);
                         observableCollectionOfViewModelProjectTestDescribed.Add(new ViewModelProjectTestsDescribed(iID, sNameOfTest, iRunsCounter, sCurrentStatus) );
@@ -116,10 +127,9 @@ namespace Trackio.ViewModel
 
         public void saveTestDescribedLogFile()
         {
-            projectDescribedLogFileExists();
             File.SetAttributes(sProjectDescribedLogFile, FileAttributes.Normal);
             int iLineNumberToBeUpdated = 0;
-            string[] sArrayOfStringsToWrite = new string[4];
+            string[] sArrayOfStringsToWrite = new string[5];
             //checking if test already exists in LOG file; if it does update section will be called 
             if (dictionaryOfExistingTestIDs.ContainsKey(iID))
             {
@@ -128,20 +138,24 @@ namespace Trackio.ViewModel
                 //get value from Dictionary by Key; it's our line's number which we want to update
                 iLineNumberToBeUpdated = dictionaryOfExistingTestIDs[iID];
                 arrayOfLinesTestDecribed[iLineNumberToBeUpdated] = $"[Test_{iID}]";
-                arrayOfLinesTestDecribed[iLineNumberToBeUpdated + 1] = $"Name : {sNameOfTest}";
-                arrayOfLinesTestDecribed[iLineNumberToBeUpdated + 2] = $"Runs' Count : {iRunsCounter}";
-                arrayOfLinesTestDecribed[iLineNumberToBeUpdated + 3] = $"Current Status : {sCurrentStatus}";
+                arrayOfLinesTestDecribed[iLineNumberToBeUpdated + 1] = $"Name :{sNameOfTest}";
+                arrayOfLinesTestDecribed[iLineNumberToBeUpdated + 2] = $"Runs' Count :{iRunsCounter}";
+                arrayOfLinesTestDecribed[iLineNumberToBeUpdated + 3] = $"Current Status :{sCurrentStatus}";
+                arrayOfLinesTestDecribed[iLineNumberToBeUpdated + 4] = $"Comments :{sComment}";
                 File.WriteAllLines(sProjectDescribedLogFile, arrayOfLinesTestDecribed);
             }
             else
             {
                 //creating whole section to write to file
                 sArrayOfStringsToWrite[0] = $"[Test_{iID}]";
-                sArrayOfStringsToWrite[1] = $"Name : {sNameOfTest}";
-                sArrayOfStringsToWrite[2] = $"Runs' Count : {iRunsCounter}";
-                sArrayOfStringsToWrite[3] = $"Current Status : {sCurrentStatus}";
+                sArrayOfStringsToWrite[1] = $"Name :{sNameOfTest}";
+                sArrayOfStringsToWrite[2] = $"Runs' Count :{iRunsCounter}";
+                sArrayOfStringsToWrite[3] = $"Current Status :{sCurrentStatus}";
+                sArrayOfStringsToWrite[4] = $"Comments :{sComment}";
                 File.AppendAllLines(sProjectDescribedLogFile, sArrayOfStringsToWrite);
-            }  
+            }
+            //call read function to update object's fields (most important is dictionary) 
+            readTestDescribedLogFile();
         }
 
         public void projectDescribedLogFileExists()

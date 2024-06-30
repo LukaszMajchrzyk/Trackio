@@ -15,6 +15,7 @@ namespace Trackio.Model
         public int iRunsCounter { get; set; }
         public List<string> listOfStatuses { get; set; }
         public string sCurrentStatus {  get; set; }
+        public string sComment { get; set; }
 
     }
 }

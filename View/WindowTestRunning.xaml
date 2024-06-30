@@ -1,0 +1,17 @@
+﻿<Window x:Class="Trackio.View.WindowTestRunning" WindowStartupLocation="CenterOwner"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Trackio.View"
+        mc:Ignorable="d"
+        Title="Test Run" Height="300" Width="600">
+    <Grid Background="#FFD0D0D0">
+        <Label x:Name="labelHeader" HorizontalAlignment="Left" Margin="23,27,0,0" VerticalAlignment="Top" Height="30" Width="316"/>
+        <Button x:Name="buttonCorrect" Content="Correct"  HorizontalAlignment="Left" Margin="67,187,0,0" VerticalAlignment="Top" Width="77"  Click="buttonCorrectClick" />
+        <Button x:Name="buttonIncorrect" Content="Not Correct " HorizontalAlignment="Left" Margin="162,187,0,0" VerticalAlignment="Top" Width="77"  Click="buttonIncorrectClick"/>
+        <Button x:Name="buttonAbortTest" Content="Abort" HorizontalAlignment="Left" Margin="483,187,0,0" VerticalAlignment="Top" Width="77" Click="buttonAbortTestClick"/>
+        <Label x:Name="labelNameOfTest" HorizontalAlignment="Center" Margin="0,71,0,0" BorderThickness="1" VerticalAlignment="Top" Height="71" Width="520"/>
+
+    </Grid>
+</Window>

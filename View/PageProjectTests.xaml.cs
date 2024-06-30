@@ -7,10 +7,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Dynamic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -29,28 +31,23 @@ namespace Trackio.View
         private int iNextFreeNumberOfTest;
         private int iMainProjectID;
         private int iTestID;
+        private Dictionary<int, bool> dictionaryIdTestAndResult;
         ObservableCollection<ViewModelProjectTestsDescribed> observableCollectionListOfProjectTests;
         public PageProjectTests(int iMainProjectID)
         {
             InitializeComponent();
+
             //storing main ID of Project
             this.iMainProjectID = iMainProjectID;
             //tests status initializer
             viewModelProjectTestsDescribed = new ViewModelProjectTestsDescribed(iMainProjectID);
             sCurrentStatus.ItemsSource = viewModelProjectTestsDescribed.listOfStatuses;
-
-
             viewModelProjectTestsDescribed.createTestsDescribedLogFile();
-            
-
-
             //initilizer for ObservableCollection
             observableCollectionListOfProjectTests = new ObservableCollection<ViewModelProjectTestsDescribed>();
             observableCollectionListOfProjectTests = viewModelProjectTestsDescribed.readTestDescribedLogFile();
             dgProjectTests.ItemsSource = observableCollectionListOfProjectTests;
             dgProjectTests.AllowDrop = false;
-
-
         }
 
         private void AddNewTest(object sender, RoutedEventArgs e)
@@ -71,8 +68,6 @@ namespace Trackio.View
         {
             //checking if selected Test has already performed Runs. If so deleting is not allowed
             observableCollectionListOfProjectTests.RemoveAt(iTestID);
-
-
         }
 
         private void Save(object sender, RoutedEventArgs e)
@@ -100,6 +95,7 @@ namespace Trackio.View
                 viewModelProjectTestsDescribed.sNameOfTest = observableCollectionListOfProjectTests[i].sNameOfTest;
                 viewModelProjectTestsDescribed.iRunsCounter = observableCollectionListOfProjectTests[i].iRunsCounter;
                 viewModelProjectTestsDescribed.sCurrentStatus = observableCollectionListOfProjectTests[i].sCurrentStatus;
+                viewModelProjectTestsDescribed.sComment = observableCollectionListOfProjectTests[i].sComment;
                 viewModelProjectTestsDescribed.saveTestDescribedLogFile();
             }
 
@@ -110,8 +106,30 @@ namespace Trackio.View
             iTestID = dgProjectTests.SelectedIndex;
         }
 
+        private void RunAllTests(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < observableCollectionListOfProjectTests.Count; i++) 
+            {
+                if (observableCollectionListOfProjectTests[i].sCurrentStatus != "Obsolete" || observableCollectionListOfProjectTests[i].sCurrentStatus != "Done")
+                {
+                    WindowTestRunning windowTestRunning = new WindowTestRunning(observableCollectionListOfProjectTests[i].sNameOfTest, observableCollectionListOfProjectTests[i].iID);
+                    windowTestRunning.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                    windowTestRunning.ShowDialog();
+                    if (windowTestRunning.bTestAborted == true) break;
+                }
+                else
+                {
+                }
+                
+            }
+            
 
+        }
 
-
+        private void ButtonCloseClick(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
+            mainWindow.MainFrame.Content = new PageBlank();
+        }
     }
 }

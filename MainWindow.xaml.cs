@@ -61,7 +61,7 @@ namespace Trackio
 
         private void menuAboutClick(object sender, RoutedEventArgs e)
         {
-            WindowAbout windowAbout = new WindowAbout();
+            WindowAbout windowAbout = new WindowAbout ();
             windowAbout.Show();
         }
 

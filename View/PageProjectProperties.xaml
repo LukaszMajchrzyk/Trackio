@@ -20,7 +20,7 @@
         <Label x:Name="labelCurrentStatus" Content="Current Status" HorizontalAlignment="Left" Margin="23,247,0,0" VerticalAlignment="Top" FontSize="13"/>
         <ComboBox x:Name="comboBoxCurrentStatus" HorizontalAlignment="Left" Margin="127,250,0,0" VerticalAlignment="Top" Width="164"/>
         <Button x:Name="buttonSave" Content="Save" HorizontalAlignment="Left" Margin="627,388,0,0" VerticalAlignment="Top" Width="74" Click="buttonSaveClick"/>
-        <Button x:Name="buttonCancel" Content="Cancel" HorizontalAlignment="Left" Margin="720,388,0,0" VerticalAlignment="Top" Width="74" Click="buttonCancelClick"/>
+        <Button x:Name="buttonClose" Content="Close" HorizontalAlignment="Left" Margin="720,388,0,0" VerticalAlignment="Top" Width="74" Click="buttonCloseClick"/>
         <Frame x:Name ="framePageProjectProperties" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Page>

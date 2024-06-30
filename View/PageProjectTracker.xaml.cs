@@ -14,19 +14,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Trackio.ViewModel;
 
 namespace Trackio.View
 {
-    /// <summary>
-    /// Interaction logic for PageProjectProperties.xaml
-    /// </summary>
     public partial class PageProjectTracker : Page
     {
         private int iID;
+        private ViewModelProjectTracker viewModelProjectTracker;
         public PageProjectTracker(int iID)
         {
             this.iID = iID;
             InitializeComponent();
+            viewModelProjectTracker = new ViewModelProjectTracker(iID);
+            viewModelProjectTracker.readProjectLogFile();
+
+
         }
     }
 }

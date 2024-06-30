@@ -23,7 +23,7 @@ namespace Trackio.View
     public partial class PageProjectProperties : Page
     {
         private int iID;
-        private ViewModelFileManager viewModelFileManager;
+        private ViewModelProjectMain viewModelFileManager;
         private ViewModelProjectProperties viewModelProjectProperties;
         private ModelProjectProperties modelProjectProperties;
 
@@ -33,7 +33,7 @@ namespace Trackio.View
             this.iID = iID;
             InitializeComponent();
             viewModelProjectProperties = new ViewModelProjectProperties();
-            viewModelFileManager = new ViewModelFileManager();
+            viewModelFileManager = new ViewModelProjectMain();
             //
 
             //invoke general methods from FileManager to get/set desired values
@@ -94,7 +94,7 @@ namespace Trackio.View
             textBoxLastUpdated.Text = DateTime.Now.ToString();
         }
 
-        private void buttonCancelClick(object sender, RoutedEventArgs e)
+        private void buttonCloseClick(object sender, RoutedEventArgs e)
         {
             //there is a need to go backwards 2 steps so instead we're calling main frame
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;

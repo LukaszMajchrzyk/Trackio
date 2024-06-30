@@ -24,12 +24,12 @@ namespace Trackio.View
     public partial class PageOpenProject : Page
     {
         private int iIdOfSelectedProject;
-        private ViewModelFileManager viewModelFileManager;
+        private ViewModelProjectMain viewModelFileManager;
         public PageOpenProject()
         {
             InitializeComponent();
             //get existing IDs and Project Names from main LOG file
-            viewModelFileManager = new ViewModelFileManager();
+            viewModelFileManager = new ViewModelProjectMain();
             viewModelFileManager.readMainLogFile();
             //setting values to data grid
             datagridIDsAndProjectsNames.ItemsSource = viewModelFileManager.dictionaryIDsAndProjectNames;
@@ -44,7 +44,6 @@ namespace Trackio.View
         }
         private void buttonOpenClick(object sender, RoutedEventArgs e)
         {
-            //frameOpenProject.Content = new PageProjectProperties(iIdOfSelectedProject);
             frameOpenProject.Content = new PageProject(iIdOfSelectedProject);
         }
 
