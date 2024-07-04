@@ -9,16 +9,13 @@
       Title="PageProjectProperties">
 
     <Grid Background="#FFD0D0D0">
-        <Button Content="Tracker" HorizontalAlignment="Left" Margin="232,141,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="150" Width="287">
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-8.488"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>
+        <DataGrid Name="dgProjectRuns" AutoGenerateColumns="False" Margin="0,0,0,99" CanUserAddRows="False" >
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="dgtcIDofRun" Header="Run's ID" Binding="{Binding iIdOfRun}" IsReadOnly="True" />
+                <DataGridTextColumn x:Name="dgtcNameOfTest"  Header="Test's Name" Binding="{Binding sNameOfTest}" Width="*" />
+                <DataGridTextColumn x:Name="dgtcCorrect" Header="Status" Binding="{Binding bResult}" Width="120"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
     </Grid>
 </Page>

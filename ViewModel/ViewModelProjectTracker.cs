@@ -18,6 +18,7 @@ namespace Trackio.ViewModel
         int iIDofMainProject;
         string sDirectoryLogFiles = System.IO.Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.System)) + "Trackio/LOG/";
         ObservableCollection<ViewModelProjectTracker> observableCollectionViewModelProjectTracker;
+        SortedSet<int> sortedSetOfRunIds;
         private ModelProjectTracker modelProjectTracker;
         public int iIdOfProject
         {
@@ -28,6 +29,16 @@ namespace Trackio.ViewModel
         {
             get { return modelProjectTracker.iIdOfTest; }
             set { modelProjectTracker.iIdOfTest = value; }
+        }
+        public int iIdOfRun
+        {
+            get { return modelProjectTracker.iIdOfRun; }
+            set { modelProjectTracker.iIdOfRun = value; }
+        }
+        public int iLastIdOfRun
+        {
+            get { return modelProjectTracker.iLastIdOfRun; }
+            set { modelProjectTracker.iLastIdOfRun = value; }
         }
         public string sNameOfTest
         {
@@ -40,10 +51,11 @@ namespace Trackio.ViewModel
             set { modelProjectTracker.bResult = value; }
         }
 
-        public ViewModelProjectTracker(int iIdOfProject, int iIdOfTest, string sNameOfTest, bool bResult)
+        public ViewModelProjectTracker(int iIdOfProject, int iIdOfRun, int iIdOfTest, string sNameOfTest, bool bResult)
         {
             modelProjectTracker = new ModelProjectTracker();
             modelProjectTracker.iIdOfProject = iIdOfProject;
+            modelProjectTracker.iIdOfRun = iIdOfRun;
             modelProjectTracker.iIdOfTest = iIdOfTest;
             modelProjectTracker.sNameOfTest = sNameOfTest;
             modelProjectTracker.bResult = bResult;
@@ -60,6 +72,7 @@ namespace Trackio.ViewModel
             projectLogFileExists();
             if (bProjectLogFileExists)
             {
+                sortedSetOfRunIds = new SortedSet<int>();
                 string[] arrayOfLinesTestTracker = File.ReadAllLines(sProjectLogFile);
                 observableCollectionViewModelProjectTracker = new ObservableCollection<ViewModelProjectTracker>();
                 for (int i = 0; i < arrayOfLinesTestTracker.Length; i++)
@@ -67,16 +80,33 @@ namespace Trackio.ViewModel
                     //checking for 2 "_" characters; this is how we identify tracker and not a project log (single "_")
                     if (arrayOfLinesTestTracker[i].IndexOf("_") != arrayOfLinesTestTracker[i].LastIndexOf("_"))
                     {
-                        iIdOfProject = Int32.Parse(arrayOfLinesTestTracker[i].Substring(9, arrayOfLinesTestTracker[i].Length - 12));
+                        iIdOfRun = Int32.Parse(arrayOfLinesTestTracker[i].Substring(9, arrayOfLinesTestTracker[i].Length - 12));
                         iIdOfTest = Int32.Parse(arrayOfLinesTestTracker[i].Substring(11, arrayOfLinesTestTracker[i].Length - 12));
-                        sNameOfTest = arrayOfLinesTestTracker[i + 3].Substring(arrayOfLinesTestTracker[i + 3].LastIndexOf(':') + 1);
-                        if (arrayOfLinesTestTracker[i + 4].Substring(arrayOfLinesTestTracker[i + 4].LastIndexOf(':') + 1) == "True") bResult = true;
+                        sNameOfTest = arrayOfLinesTestTracker[i + 1].Substring(arrayOfLinesTestTracker[i + 1].LastIndexOf(':') + 1);
+                        if (bool.Parse(arrayOfLinesTestTracker[i + 2].Substring(arrayOfLinesTestTracker[i + 2].LastIndexOf(':') + 1))) bResult = true;
                         else bResult = false;
-                        observableCollectionViewModelProjectTracker.Add(new ViewModelProjectTracker(iIdOfProject, iIdOfTest, sNameOfTest, bResult));
+                        sortedSetOfRunIds.Add(iIdOfRun);
+                        observableCollectionViewModelProjectTracker.Add(new ViewModelProjectTracker(iIdOfProject, iIdOfRun, iIdOfTest, sNameOfTest, bResult));
                     }
                 }
+                //finding last Id of Run to set next non occupied ID;
+                for (int i = 1; i <= sortedSetOfRunIds.Count + 1; i++)
+                {
+                    if (sortedSetOfRunIds.Contains(i)) iLastIdOfRun = i + 1;
+                    else iLastIdOfRun = i;
+                }
+
             }
             return observableCollectionViewModelProjectTracker;
+        }
+
+        public void saveTrackerToLog()
+        {
+            projectLogFileExists();
+            if (bProjectLogFileExists)
+            {
+
+            }
         }
 
 

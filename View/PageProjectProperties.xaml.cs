@@ -54,7 +54,6 @@ namespace Trackio.View
                 //getting Project's status variables from Model Class (by default it's mentioned for new Project)
                 comboBoxCurrentStatus.ItemsSource = viewModelProjectProperties.listOfProjectsStatus;
                 comboBoxCurrentStatus.SelectedIndex = 0;
-                
 
             }
             else

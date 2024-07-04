@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Principal;
@@ -27,9 +28,9 @@ namespace Trackio.View
             this.iID = iID;
             InitializeComponent();
             viewModelProjectTracker = new ViewModelProjectTracker(iID);
-            viewModelProjectTracker.readProjectLogFile();
-
-
+            ObservableCollection<ViewModelProjectTracker> observableCollectionViewModelProjectTracker = new ObservableCollection<ViewModelProjectTracker>();
+            observableCollectionViewModelProjectTracker= viewModelProjectTracker.readProjectLogFile();
+            dgProjectRuns.ItemsSource = observableCollectionViewModelProjectTracker;
         }
     }
 }

@@ -22,29 +22,33 @@ namespace Trackio.View
     {
         public int iIdOfTest;
         public string sNameOfTest;
-        public bool bTestResult;
         public bool bTestAborted = false;
+        public Dictionary<int, bool> dictionaryOfIdsAndResult;
         public WindowTestRunning(string sNameOfTest, int iIdOfTest)
         {
             InitializeComponent();
             this.sNameOfTest = sNameOfTest;
-            this.sNameOfTest = sNameOfTest;
             labelHeader.Content = $"[TEST # {iIdOfTest}]. Check if... :";
             labelNameOfTest.Content = sNameOfTest;
+            dictionaryOfIdsAndResult = new Dictionary<int, bool>();
         }
 
         private void buttonAbortTestClick(object sender, RoutedEventArgs e)
         {
             bTestAborted = true;
+            dictionaryOfIdsAndResult.Clear();
+            this.Close();
         }
         private void buttonCorrectClick(object sender, RoutedEventArgs e)
         {
-            bTestResult = true;
+            dictionaryOfIdsAndResult.Add(iIdOfTest, true);
+            this.Close();
         }
 
         private void buttonIncorrectClick(object sender, RoutedEventArgs e)
         {
-            bTestResult= false;
+            dictionaryOfIdsAndResult.Add(iIdOfTest, false);
+            this.Close();
         }
     }
 }

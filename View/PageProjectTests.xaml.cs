@@ -31,8 +31,11 @@ namespace Trackio.View
         private int iNextFreeNumberOfTest;
         private int iMainProjectID;
         private int iTestID;
+        private bool bRunAborted = false;
         private Dictionary<int, bool> dictionaryIdTestAndResult;
         ObservableCollection<ViewModelProjectTestsDescribed> observableCollectionListOfProjectTests;
+        ObservableCollection<ViewModelProjectTracker> observableCollectionViewModelProjectTracker;
+        ViewModelProjectTracker viewModelProjectTracker;
         public PageProjectTests(int iMainProjectID)
         {
             InitializeComponent();
@@ -80,7 +83,7 @@ namespace Trackio.View
             {
                 //check if name of test does not have special characters -> it can be an issue during LOG file parsing
                 var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
-                if (observableCollectionListOfProjectTests[i].sNameOfTest == null || !regexItem.IsMatch(observableCollectionListOfProjectTests[i].sNameOfTest) )
+                if (observableCollectionListOfProjectTests[i].sNameOfTest == null || !regexItem.IsMatch(observableCollectionListOfProjectTests[i].sNameOfTest))
                 {
                     MessageBox.Show("Please provid valid name of Test. No empty value or special characters");
                     break;
@@ -91,6 +94,7 @@ namespace Trackio.View
                     MessageBox.Show("Please select status of added test");
                     break;
                 }
+                //filling object's properties
                 viewModelProjectTestsDescribed.iID = observableCollectionListOfProjectTests[i].iID;
                 viewModelProjectTestsDescribed.sNameOfTest = observableCollectionListOfProjectTests[i].sNameOfTest;
                 viewModelProjectTestsDescribed.iRunsCounter = observableCollectionListOfProjectTests[i].iRunsCounter;
@@ -108,21 +112,34 @@ namespace Trackio.View
 
         private void RunAllTests(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < observableCollectionListOfProjectTests.Count; i++) 
+            observableCollectionViewModelProjectTracker = new ObservableCollection <ViewModelProjectTracker>();
+            for (int i = 0; i < observableCollectionListOfProjectTests.Count; i++)
             {
-                if (observableCollectionListOfProjectTests[i].sCurrentStatus != "Obsolete" || observableCollectionListOfProjectTests[i].sCurrentStatus != "Done")
+                if ((observableCollectionListOfProjectTests[i].sCurrentStatus != "Obsolete" || observableCollectionListOfProjectTests[i].sCurrentStatus != "Done") && !bRunAborted)
                 {
                     WindowTestRunning windowTestRunning = new WindowTestRunning(observableCollectionListOfProjectTests[i].sNameOfTest, observableCollectionListOfProjectTests[i].iID);
                     windowTestRunning.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                     windowTestRunning.ShowDialog();
-                    if (windowTestRunning.bTestAborted == true) break;
-                }
-                else
-                {
+                    //if button Abort is clicked -> break the loop and do not save Run's result
+                    if (windowTestRunning.bTestAborted)
+                    {
+                        bRunAborted = true;
+                        break;
+                    }
+                    dictionaryIdTestAndResult = windowTestRunning.dictionaryOfIdsAndResult;
                 }
                 
             }
+            if (dictionaryIdTestAndResult.Count() != 0)
+            {
+                foreach (var v in dictionaryIdTestAndResult)
+                {
+
+                }
+
+            }
             
+
 
         }
 
