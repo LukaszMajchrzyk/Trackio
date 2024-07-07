@@ -27,6 +27,7 @@ namespace Trackio.View
         public WindowTestRunning(string sNameOfTest, int iIdOfTest)
         {
             InitializeComponent();
+            this.iIdOfTest = iIdOfTest;
             this.sNameOfTest = sNameOfTest;
             labelHeader.Content = $"[TEST # {iIdOfTest}]. Check if... :";
             labelNameOfTest.Content = sNameOfTest;

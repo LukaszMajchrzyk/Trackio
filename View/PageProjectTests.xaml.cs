@@ -34,12 +34,13 @@ namespace Trackio.View
         private bool bRunAborted = false;
         private Dictionary<int, bool> dictionaryIdTestAndResult;
         ObservableCollection<ViewModelProjectTestsDescribed> observableCollectionListOfProjectTests;
+        ObservableCollection<ViewModelProjectTestsDescribed> observableCollectionListOfProjectTestsEligableForRun;
         ObservableCollection<ViewModelProjectTracker> observableCollectionViewModelProjectTracker;
         ViewModelProjectTracker viewModelProjectTracker;
         public PageProjectTests(int iMainProjectID)
         {
             InitializeComponent();
-
+            viewModelProjectTracker = new ViewModelProjectTracker(iMainProjectID);
             //storing main ID of Project
             this.iMainProjectID = iMainProjectID;
             //tests status initializer
@@ -47,6 +48,7 @@ namespace Trackio.View
             sCurrentStatus.ItemsSource = viewModelProjectTestsDescribed.listOfStatuses;
             viewModelProjectTestsDescribed.createTestsDescribedLogFile();
             //initilizer for ObservableCollection
+            observableCollectionListOfProjectTestsEligableForRun = new ObservableCollection<ViewModelProjectTestsDescribed>();
             observableCollectionListOfProjectTests = new ObservableCollection<ViewModelProjectTestsDescribed>();
             observableCollectionListOfProjectTests = viewModelProjectTestsDescribed.readTestDescribedLogFile();
             dgProjectTests.ItemsSource = observableCollectionListOfProjectTests;
@@ -112,33 +114,72 @@ namespace Trackio.View
 
         private void RunAllTests(object sender, RoutedEventArgs e)
         {
-            observableCollectionViewModelProjectTracker = new ObservableCollection <ViewModelProjectTracker>();
+            dictionaryIdTestAndResult = new Dictionary<int, bool>();
+
+            //create observable collection which has only eligeble tests
             for (int i = 0; i < observableCollectionListOfProjectTests.Count; i++)
             {
                 if ((observableCollectionListOfProjectTests[i].sCurrentStatus != "Obsolete" || observableCollectionListOfProjectTests[i].sCurrentStatus != "Done") && !bRunAborted)
                 {
-                    WindowTestRunning windowTestRunning = new WindowTestRunning(observableCollectionListOfProjectTests[i].sNameOfTest, observableCollectionListOfProjectTests[i].iID);
-                    windowTestRunning.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                    windowTestRunning.ShowDialog();
-                    //if button Abort is clicked -> break the loop and do not save Run's result
-                    if (windowTestRunning.bTestAborted)
-                    {
-                        bRunAborted = true;
-                        break;
-                    }
-                    dictionaryIdTestAndResult = windowTestRunning.dictionaryOfIdsAndResult;
+                    observableCollectionListOfProjectTestsEligableForRun.Add(observableCollectionListOfProjectTests[i]);
                 }
-                
             }
-            if (dictionaryIdTestAndResult.Count() != 0)
+
+
+            for (int i = 0; i < observableCollectionListOfProjectTestsEligableForRun.Count; i++)
             {
-                foreach (var v in dictionaryIdTestAndResult)
-                {
 
+                WindowTestRunning windowTestRunning = new WindowTestRunning(observableCollectionListOfProjectTests[i].sNameOfTest, observableCollectionListOfProjectTests[i].iID);
+                windowTestRunning.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                windowTestRunning.ShowDialog();
+                //if button Abort is clicked -> break the loop and do not save Run's result
+                if (windowTestRunning.bTestAborted)
+                {
+                    bRunAborted = true;
+                    break;
                 }
+                //adding values to dictionary from other one
+                foreach (var v in windowTestRunning.dictionaryOfIdsAndResult)
+                {
+                    dictionaryIdTestAndResult.Add(v.Key, v.Value);
+                }
+            }
+            if (dictionaryIdTestAndResult != null)
+            {
+                //saving result to log for each test and id //projecttracker
+                viewModelProjectTracker.saveTrackerToLog(observableCollectionListOfProjectTestsEligableForRun, dictionaryIdTestAndResult);
+
+
+
+
+
+
+
+
+
+
+
+                //getting run's count main section of project file// projecttest described
+                //for (int i = 0; i < observableCollectionListOfProjectTests.Count; i++)
+                //{
+                //    viewModelProjectTestsDescribed.iRunsCounter = 9;
+                //    viewModelProjectTestsDescribed.saveTestDescribedLogFile();
+                //
+                //}
+
+
+
+
+
+
+
 
             }
-            
+            else
+            {
+
+            }
+
 
 
         }
