@@ -71,13 +71,14 @@ namespace Trackio.ViewModel
 
 
 
-        public ViewModelProjectTestsDescribed(int iID, string sNameOfTest, int iRunsCounter, string sCurrentStatus)
+        public ViewModelProjectTestsDescribed(int iID, string sNameOfTest, int iRunsCounter, string sCurrentStatus, string sComment)
         {
             modelProjectTestsDescribed = new ModelProjectTestsDescribed();
             modelProjectTestsDescribed.iID = iID;
             modelProjectTestsDescribed.sNameOfTest = sNameOfTest;
             modelProjectTestsDescribed.iRunsCounter = iRunsCounter;
             modelProjectTestsDescribed.sCurrentStatus = sCurrentStatus;
+            modelProjectTestsDescribed.sComment= sComment;
         }
 
         public ViewModelProjectTestsDescribed()
@@ -116,7 +117,7 @@ namespace Trackio.ViewModel
                         sComment = arrayOfLinesTestDecribed[i + 4].Substring(arrayOfLinesTestDecribed[i + 4].LastIndexOf(':') + 1);
                         //dictionary will keep test ID and number of line where section for this test begins
                         dictionaryOfExistingTestIDs.Add(iID, iLineCounter);
-                        observableCollectionOfViewModelProjectTestDescribed.Add(new ViewModelProjectTestsDescribed(iID, sNameOfTest, iRunsCounter, sCurrentStatus) );
+                        observableCollectionOfViewModelProjectTestDescribed.Add(new ViewModelProjectTestsDescribed(iID, sNameOfTest, iRunsCounter, sCurrentStatus, sComment) );
                     }
                     iLineCounter += 1;
                 }

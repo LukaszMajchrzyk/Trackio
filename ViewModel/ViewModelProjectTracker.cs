@@ -18,8 +18,6 @@ namespace Trackio.ViewModel
         int iIDofMainProject;
         string sDirectoryLogFiles = System.IO.Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.System)) + "Trackio/LOG/";
         ObservableCollection<ViewModelProjectTracker> observableCollectionViewModelProjectTracker;
-        SortedSet<int> sortedSetOfRunIds;
-        Dictionary<int, int> dictionaryOfTestIdsAndRuns;
         private ModelProjectTracker modelProjectTracker;
         private ViewModelProjectTestsDescribed viewModelProjectTestsDescribed;
         public int iIdOfProject
@@ -74,8 +72,6 @@ namespace Trackio.ViewModel
             projectLogFileExists();
             if (bProjectLogFileExists)
             {
-                sortedSetOfRunIds = new SortedSet<int>();
-                dictionaryOfTestIdsAndRuns = new Dictionary<int, int>();
                 string[] arrayOfLinesTestTracker = File.ReadAllLines(sProjectLogFile);
                 observableCollectionViewModelProjectTracker = new ObservableCollection<ViewModelProjectTracker>();
                 for (int i = 0; i < arrayOfLinesTestTracker.Length; i++)
@@ -88,24 +84,14 @@ namespace Trackio.ViewModel
                         sNameOfTest = arrayOfLinesTestTracker[i + 1].Substring(arrayOfLinesTestTracker[i + 1].LastIndexOf(':') + 1);
                         if (bool.Parse(arrayOfLinesTestTracker[i + 2].Substring(arrayOfLinesTestTracker[i + 2].LastIndexOf(':') + 1))) bResult = true;
                         else bResult = false;
-                        sortedSetOfRunIds.Add(iIdOfRun);
                         observableCollectionViewModelProjectTracker.Add(new ViewModelProjectTracker(iIdOfProject, iIdOfRun, iIdOfTest, sNameOfTest, bResult));
-                        //dictionary needed for main section of LOG update
-                        dictionaryOfTestIdsAndRuns.Add(iIdOfTest, iIdOfRun);
                     }
                 }
-                //finding last Id of Run to set next non occupied ID;
-                for (int i = 1; i <= sortedSetOfRunIds.Count + 1; i++)
-                {
-                    if (sortedSetOfRunIds.Contains(i)) iLastIdOfRun = i + 1;
-                    else iLastIdOfRun = i;
-                }
-
             }
             return observableCollectionViewModelProjectTracker;
         }
 
-        public void saveTrackerToLog(ObservableCollection<ViewModelProjectTestsDescribed> observableCollectionviewModelProjectTestDecribed, Dictionary<int, bool> dictionaryOfIdsAndTestResult)
+        public void saveTrackerToLog(ObservableCollection<ViewModelProjectTestsDescribed> observableCollectionviewModelProjectTestDecribed, Dictionary<int, bool> dictionaryOfIdsAndTestResult, int iRunsCount)
         {
             projectLogFileExists();
             if (bProjectLogFileExists)
@@ -117,7 +103,7 @@ namespace Trackio.ViewModel
                 {
                     string[] arrayOfLinesToBeAdded = new string[4];
                     arrayOfLinesToBeAdded[0] = "";
-                    arrayOfLinesToBeAdded[1] = $"[Tracker_{9}_{dictionaryOfIdsAndTestResult.ElementAt(i).Key}]";
+                    arrayOfLinesToBeAdded[1] = $"[Tracker_{iRunsCount}_{dictionaryOfIdsAndTestResult.ElementAt(i).Key}]";
                     arrayOfLinesToBeAdded[2] = $"Name: {observableCollectionviewModelProjectTestDecribed[i].sNameOfTest}";
                     arrayOfLinesToBeAdded[3] = $"Result:{dictionaryOfIdsAndTestResult.ElementAt(i).Value}";
                     listOfLinestoBeSaved.AddRange(arrayOfLinesToBeAdded.ToList());

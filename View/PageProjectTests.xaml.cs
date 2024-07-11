@@ -30,6 +30,7 @@ namespace Trackio.View
         private ViewModelProjectTestsDescribed viewModelProjectTestsDescribed;
         private int iNextFreeNumberOfTest;
         private int iMainProjectID;
+        private int iCounterOfRuns;
         private int iTestID;
         private bool bRunAborted = false;
         private Dictionary<int, bool> dictionaryIdTestAndResult;
@@ -57,6 +58,8 @@ namespace Trackio.View
 
         private void AddNewTest(object sender, RoutedEventArgs e)
         {
+            //default Runs' counter is 0
+            iCounterOfRuns = 0;
             //default starting number of ID is 1
             iNextFreeNumberOfTest = 1;
             if (observableCollectionListOfProjectTests.Count > 0)
@@ -65,7 +68,7 @@ namespace Trackio.View
 
                 iNextFreeNumberOfTest = Enumerable.Range(1, int.MaxValue).Except(arrayOfIds).FirstOrDefault();
             }
-            observableCollectionListOfProjectTests.Add(new ViewModelProjectTestsDescribed(iMainProjectID) { iID = iNextFreeNumberOfTest, iRunsCounter = 0 });
+            observableCollectionListOfProjectTests.Add(new ViewModelProjectTestsDescribed(iMainProjectID) { iID = iNextFreeNumberOfTest, iRunsCounter = iCounterOfRuns });
 
         }
 
@@ -114,8 +117,11 @@ namespace Trackio.View
 
         private void RunAllTests(object sender, RoutedEventArgs e)
         {
-            dictionaryIdTestAndResult = new Dictionary<int, bool>();
+            //get updated data to observable collection to obtain last Runs' ID
+            observableCollectionListOfProjectTests = viewModelProjectTestsDescribed.readTestDescribedLogFile();
+            dgProjectTests.ItemsSource = observableCollectionListOfProjectTests;
 
+            dictionaryIdTestAndResult = new Dictionary<int, bool>();
             //create observable collection which has only eligeble tests
             for (int i = 0; i < observableCollectionListOfProjectTests.Count; i++)
             {
@@ -146,42 +152,25 @@ namespace Trackio.View
             }
             if (dictionaryIdTestAndResult != null)
             {
+                
+                //saving Runs' Count to Log
+                for (int i = 0;i < dictionaryIdTestAndResult.Count; i++)
+                {
+                    iCounterOfRuns = viewModelProjectTestsDescribed.iID = observableCollectionListOfProjectTestsEligableForRun[i].iRunsCounter;
+                    iCounterOfRuns += 1;
+                    viewModelProjectTestsDescribed.iID = observableCollectionListOfProjectTestsEligableForRun[i].iID;
+                    viewModelProjectTestsDescribed.sNameOfTest = observableCollectionListOfProjectTestsEligableForRun[i].sNameOfTest;
+                    viewModelProjectTestsDescribed.iRunsCounter = iCounterOfRuns;
+                    viewModelProjectTestsDescribed.sCurrentStatus = observableCollectionListOfProjectTestsEligableForRun[i].sCurrentStatus;
+                    viewModelProjectTestsDescribed.sComment = observableCollectionListOfProjectTestsEligableForRun[i].sComment;
+                    viewModelProjectTestsDescribed.saveTestDescribedLogFile();
+                }
                 //saving result to log for each test and id //projecttracker
-                viewModelProjectTracker.saveTrackerToLog(observableCollectionListOfProjectTestsEligableForRun, dictionaryIdTestAndResult);
-
-
-
-
-
-
-
-
-
-
-
-                //getting run's count main section of project file// projecttest described
-                //for (int i = 0; i < observableCollectionListOfProjectTests.Count; i++)
-                //{
-                //    viewModelProjectTestsDescribed.iRunsCounter = 9;
-                //    viewModelProjectTestsDescribed.saveTestDescribedLogFile();
-                //
-                //}
-
-
-
-
-
-
-
-
+                viewModelProjectTracker.saveTrackerToLog(observableCollectionListOfProjectTestsEligableForRun, dictionaryIdTestAndResult,iCounterOfRuns);
             }
-            else
-            {
-
-            }
-
-
-
+            //get updated data to observable collection
+            observableCollectionListOfProjectTests = viewModelProjectTestsDescribed.readTestDescribedLogFile();
+            dgProjectTests.ItemsSource = observableCollectionListOfProjectTests;
         }
 
         private void ButtonCloseClick(object sender, RoutedEventArgs e)

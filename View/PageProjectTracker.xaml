@@ -13,7 +13,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="dgtcIDofRun" Header="Run's ID" Binding="{Binding iIdOfRun}" IsReadOnly="True" />
                 <DataGridTextColumn x:Name="dgtcNameOfTest"  Header="Test's Name" Binding="{Binding sNameOfTest}" Width="*" />
-                <DataGridTextColumn x:Name="dgtcCorrect" Header="Status" Binding="{Binding bResult}" Width="120"/>
+                <DataGridTextColumn x:Name="dgtcCorrect" Header="Result" Binding="{Binding bResult}" Width="120"/>
             </DataGrid.Columns>
         </DataGrid>
 
