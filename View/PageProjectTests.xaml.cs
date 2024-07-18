@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -74,8 +75,22 @@ namespace Trackio.View
 
         private void RemoveTest(object sender, RoutedEventArgs e)
         {
+            //check if test is selected
+            if (dgProjectTests.SelectedItem == null)
+            {
+                WindowsMessageGeneric windowMessageGeneric = new WindowsMessageGeneric("Please select test in table first");
+                windowMessageGeneric.Show();
+            }
             //checking if selected Test has already performed Runs. If so deleting is not allowed
-            observableCollectionListOfProjectTests.RemoveAt(iTestID);
+            else if (observableCollectionListOfProjectTests[dgProjectTests.SelectedIndex].iRunsCounter != 0)
+            {
+                WindowsMessageGeneric windowMessageGeneric = new WindowsMessageGeneric("You cannot delete Test if it has been run before");
+                windowMessageGeneric.Show();
+            }
+            else
+            {
+                observableCollectionListOfProjectTests.RemoveAt(iTestID);
+            }
         }
 
         private void Save(object sender, RoutedEventArgs e)
@@ -125,7 +140,7 @@ namespace Trackio.View
             //create observable collection which has only eligeble tests
             for (int i = 0; i < observableCollectionListOfProjectTests.Count; i++)
             {
-                if ((observableCollectionListOfProjectTests[i].sCurrentStatus != "Obsolete" || observableCollectionListOfProjectTests[i].sCurrentStatus != "Done") && !bRunAborted)
+                if ((observableCollectionListOfProjectTests[i].sCurrentStatus.Equals("In Work") || observableCollectionListOfProjectTests[i].sCurrentStatus.Equals("Created")) && !bRunAborted)
                 {
                     observableCollectionListOfProjectTestsEligableForRun.Add(observableCollectionListOfProjectTests[i]);
                 }
@@ -135,7 +150,7 @@ namespace Trackio.View
             for (int i = 0; i < observableCollectionListOfProjectTestsEligableForRun.Count; i++)
             {
 
-                WindowTestRunning windowTestRunning = new WindowTestRunning(observableCollectionListOfProjectTests[i].sNameOfTest, observableCollectionListOfProjectTests[i].iID);
+                WindowTestRunning windowTestRunning = new WindowTestRunning(observableCollectionListOfProjectTestsEligableForRun[i].sNameOfTest, observableCollectionListOfProjectTestsEligableForRun[i].iID);
                 windowTestRunning.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 windowTestRunning.ShowDialog();
                 //if button Abort is clicked -> break the loop and do not save Run's result

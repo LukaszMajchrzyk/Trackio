@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Trackio")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dcfc586216d533d56f5533f916f0777546312af4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d973d9338606bcc9800df5b7b01d6ef701c61607")]
 [assembly: System.Reflection.AssemblyProductAttribute("Trackio")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Trackio")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

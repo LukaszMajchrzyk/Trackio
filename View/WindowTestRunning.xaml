@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Trackio.View"
         mc:Ignorable="d"
-        Title="Test Run" Height="300" Width="600">
+        Title="Test Run" Height="300" Width="600"
+        WindowStyle ="None">
     <Grid Background="#FFD0D0D0">
         <Label x:Name="labelHeader" HorizontalAlignment="Left" Margin="23,27,0,0" VerticalAlignment="Top" Height="30" Width="316"/>
         <Button x:Name="buttonCorrect" Content="Correct"  HorizontalAlignment="Left" Margin="67,187,0,0" VerticalAlignment="Top" Width="77"  Click="buttonCorrectClick" />

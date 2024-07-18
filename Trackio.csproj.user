@@ -16,7 +16,7 @@
     <Compile Update="View\PageProjectProperties.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="View\WindowAbout.xaml.cs">
+    <Compile Update="View\WindowMessageGeneric.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\WindowTestRunning.xaml.cs">
@@ -45,7 +45,7 @@
     <Page Update="View\PageProjectProperties.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\WindowAbout.xaml">
+    <Page Update="View\WindowMessageGeneric.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\WindowTestRunning.xaml">

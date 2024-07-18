@@ -9,7 +9,7 @@
       Title="PageProjectProperties">
 
     <Grid Background="#FFD0D0D0">
-        <DataGrid Name="dgProjectTests" AutoGenerateColumns="False" Margin="0,0,0,99" CanUserAddRows="False" SelectionChanged="dataGrid_SelectionChanged"  >
+        <DataGrid Name="dgProjectTests" AutoGenerateColumns="False" Margin="0,0,0,99" CanUserAddRows="False" SelectionChanged="dataGrid_SelectionChanged" SelectionMode="Single"  >
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="dgtcID" Header="ID" Binding="{Binding iID}" IsReadOnly="True" />
                 <DataGridTextColumn x:Name="dgtcTestName"  Header="Test's Name" Binding="{Binding sNameOfTest}" Width="400" />

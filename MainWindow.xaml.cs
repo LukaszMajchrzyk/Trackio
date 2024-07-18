@@ -61,8 +61,8 @@ namespace Trackio
 
         private void menuAboutClick(object sender, RoutedEventArgs e)
         {
-            WindowAbout windowAbout = new WindowAbout ();
-            windowAbout.Show();
+            WindowsMessageGeneric windowMessageGeneric = new WindowsMessageGeneric("Trackio - tool for manual tests");
+            windowMessageGeneric.Show();
         }
 
     }
