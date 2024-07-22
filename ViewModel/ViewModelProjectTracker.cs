@@ -91,16 +91,19 @@ namespace Trackio.ViewModel
             return observableCollectionViewModelProjectTracker;
         }
 
-        public void saveTrackerToLog(ObservableCollection<ViewModelProjectTestsDescribed> observableCollectionviewModelProjectTestDecribed, Dictionary<int, bool> dictionaryOfIdsAndTestResult, int iRunsCount)
+        public void saveTrackerToLog(ObservableCollection<ViewModelProjectTestsDescribed> observableCollectionviewModelProjectTestDecribed, Dictionary<int, bool> dictionaryOfIdsAndTestResult)
         {
             projectLogFileExists();
             if (bProjectLogFileExists)
             {
+
                 string[] arrayOfCurrentFile = File.ReadAllLines(sProjectLogFile);
                 List <string> listOfLinestoBeSaved = new List <string>();
                 listOfLinestoBeSaved = arrayOfCurrentFile.ToList();
                 for (int i = 0; i < dictionaryOfIdsAndTestResult.Count; i++) 
                 {
+                    //save method is called in case of test's run so we're incrementing counter by 1
+                    int iRunsCount = observableCollectionviewModelProjectTestDecribed[i].iRunsCounter + 1;
                     string[] arrayOfLinesToBeAdded = new string[4];
                     arrayOfLinesToBeAdded[0] = "";
                     arrayOfLinesToBeAdded[1] = $"[Tracker_{iRunsCount}_{dictionaryOfIdsAndTestResult.ElementAt(i).Key}]";

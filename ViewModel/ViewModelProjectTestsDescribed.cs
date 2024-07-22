@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Diagnostics.Metrics;
 using System.IO;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Trackio.ViewModel
         string sProjectDescribedLogFile;
         bool bProjectDescribedLogFileExists;
         Dictionary<int, int> dictionaryOfExistingTestIDs;
+        Tuple<bool, int> tupleTrackingSectionExists;
         ObservableCollection<ViewModelProjectTestsDescribed> observableCollectionOfViewModelProjectTestDescribed;
         int iIDofMainProject;
         private ModelProjectTestsDescribed modelProjectTestsDescribed;
@@ -119,23 +121,29 @@ namespace Trackio.ViewModel
                         dictionaryOfExistingTestIDs.Add(iID, iLineCounter);
                         observableCollectionOfViewModelProjectTestDescribed.Add(new ViewModelProjectTestsDescribed(iID, sNameOfTest, iRunsCounter, sCurrentStatus, sComment) );
                     }
-                    iLineCounter += 1;
+                    if (arrayOfLinesTestDecribed[i].IndexOf("_") != arrayOfLinesTestDecribed[i].LastIndexOf("_") && tupleTrackingSectionExists == null)
+                    {
+                        tupleTrackingSectionExists = new Tuple<bool, int>(true, i - 1);
+                    }
+                        iLineCounter += 1;
                 }
                 return observableCollectionOfViewModelProjectTestDescribed;
             }
             return new ObservableCollection<ViewModelProjectTestsDescribed>();
         }
 
-        public void saveTestDescribedLogFile()
+        public void saveTestDescribedLogFile(bool bSaveAfterRun)
         {
             File.SetAttributes(sProjectDescribedLogFile, FileAttributes.Normal);
             int iLineNumberToBeUpdated = 0;
             string[] sArrayOfStringsToWrite = new string[5];
+            //read LOG file again for update purpose
+            string[] arrayOfLinesTestDecribed = File.ReadAllLines(sProjectDescribedLogFile);
             //checking if test already exists in LOG file; if it does update section will be called 
             if (dictionaryOfExistingTestIDs.ContainsKey(iID))
             {
-                //read LOG file again for update purpose
-                string[] arrayOfLinesTestDecribed = File.ReadAllLines(sProjectDescribedLogFile);
+                //save method is called in case of Test's run so we're incrementing runs counter by 1
+                if (bSaveAfterRun)iRunsCounter += 1;
                 //get value from Dictionary by Key; it's our line's number which we want to update
                 iLineNumberToBeUpdated = dictionaryOfExistingTestIDs[iID];
                 arrayOfLinesTestDecribed[iLineNumberToBeUpdated] = $"[Test_{iID}]";
@@ -145,8 +153,19 @@ namespace Trackio.ViewModel
                 arrayOfLinesTestDecribed[iLineNumberToBeUpdated + 4] = $"Comments :{sComment}";
                 File.WriteAllLines(sProjectDescribedLogFile, arrayOfLinesTestDecribed);
             }
+            else if (tupleTrackingSectionExists != null && tupleTrackingSectionExists.Item1 == true)
+            {
+                List <string> listOfLines = new List<string>(arrayOfLinesTestDecribed.ToList());
+                listOfLines.Insert(tupleTrackingSectionExists.Item2, $"[Test_{iID}]");
+                listOfLines.Insert(tupleTrackingSectionExists.Item2 + 1, $"Name :{sNameOfTest}");
+                listOfLines.Insert(tupleTrackingSectionExists.Item2 + 2, $"Runs' Count :{iRunsCounter}");
+                listOfLines.Insert(tupleTrackingSectionExists.Item2 + 3, $"Current Status :{sCurrentStatus}");
+                listOfLines.Insert(tupleTrackingSectionExists.Item2 + 4, $"Comments :{sComment}");
+                File.WriteAllLines(sProjectDescribedLogFile, listOfLines);
+            }
             else
             {
+                //checking if there is already secction for Tracking; if so we need to add new test before this section
                 //creating whole section to write to file
                 sArrayOfStringsToWrite[0] = $"[Test_{iID}]";
                 sArrayOfStringsToWrite[1] = $"Name :{sNameOfTest}";

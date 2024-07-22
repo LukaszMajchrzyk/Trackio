@@ -10,6 +10,7 @@ D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageProjectProperties.g.cs
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageProjectTests.g.cs
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageProjectTracker.g.cs
+D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\WindowMessageGeneric.g.cs
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\WindowTestRunning.g.cs
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\App.g.cs
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\Trackio_MarkupCompile.cache
@@ -21,6 +22,7 @@ D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageProjectProperties.baml
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageProjectTests.baml
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\PageProjectTracker.baml
+D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\WindowMessageGeneric.baml
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\WindowTestRunning.baml
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\Trackio.g.resources
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\Trackio.GeneratedMSBuildEditorConfig.editorconfig
@@ -33,5 +35,3 @@ D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\Trackio.pdb
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\Trackio.genruntimeconfig.cache
 D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\ref\Trackio.dll
-D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\WindowMessageGeneric.g.cs
-D:\Documents\0.Programowanie\3.Cpp\1.ManualTestsTracker\Trackio\obj\Debug\net8.0-windows\View\WindowMessageGeneric.baml
